@@ -1,0 +1,13 @@
+{
+  "preset": "node-style-guide",
+  "esnext": true,
+  "esprima": "esprima-fb",
+  "fileExtensions": [".js", ".jsx"],
+  "excludeFiles": [
+    "node_modules/**",
+    "build/**",
+    "src/**/public/**"
+  ],
+  "requireCapitalizedComments": null,
+  "requireSemicolons": true
+}
