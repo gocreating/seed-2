@@ -47,27 +47,4 @@ export default (app) => {
   //   .listen(config.app.port.https, function() {
   //     console.log('HTTPS server listening on port ' + config.app.port.https);
   //   });
-
-  var webpack = require('webpack');
-  var WebpackDevServer = require('webpack-dev-server');
-  var config = require(process.cwd() + '/gulp/webpack.development.js');
-
-  new WebpackDevServer(webpack(config), {
-    publicPath: 'http://localhost:3001/core/js',
-    hot: true,
-    inline: true,
-    lazy: false,
-    quiet: false,
-    noInfo: false,
-    historyApiFallback: true,
-    proxy: {
-      '*': 'http://localhost:3000',
-    },
-    stats: {colors: true},
-  }).listen(3001, 'localhost', function(err, result) {
-    if (err) {
-      console.log(err);
-    }
-    console.log('Listening at localhost:3001');
-  });
 };

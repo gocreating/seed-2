@@ -21,16 +21,6 @@ export default class DefaultLayout extends React.Component {
       {title: 'About', to: '/about'},
     ];
 
-    // return (
-    //   <BaseLayout
-    //     title="Seed"
-    //     scripts={scripts}
-    //     styles={styles} >
-    //     <Navbar />
-    //     {this.props.children}
-    //   </BaseLayout>
-    // );
-
     return (
       <BaseLayout
         title="Seed"

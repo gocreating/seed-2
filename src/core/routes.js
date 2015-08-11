@@ -1,7 +1,7 @@
 require('babel/register');
 
 import React from 'react';
-import {Route, DefaultRoute} from 'react-router';
+import {Route, DefaultRoute, NotFoundRoute} from 'react-router';
 
 var DefaultLayout = require('./flux/views/layouts/defaultLayout.jsx');
 

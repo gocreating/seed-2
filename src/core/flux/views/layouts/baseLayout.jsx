@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Helmet from 'react-helmet';
+
 export default class BaseLayout extends React.Component {
   render() {
     var scripts = this.props.scripts.map((src, idx) => {
@@ -11,30 +13,20 @@ export default class BaseLayout extends React.Component {
     });
 
     return (
-      <html>
-        <head>
-          <meta charSet="utf-8" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0" />
-          <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-          <title>{this.props.title}</title>
-          {styles}
-        </head>
-
-        <body>
-          {this.props.children}
-          {scripts}
-        </body>
-      </html>
+      <Helmet
+        title={this.props.title}
+        meta={[
+          {charSet: 'utf-8'},
+          {
+            name: 'viewport',
+            content: 'width=device-width, initial-scale=1.0',
+          },
+        ]} >
+        {styles}
+        {this.props.children}
+        {scripts}
+      </Helmet>
     );
-    // return (
-    //   <div>
-    //     {styles}
-    //     {this.props.children}
-    //     {scripts}
-    //   </div>
-    // );
   }
 };
 

@@ -28,6 +28,7 @@ var babel         = require('gulp-babel');
 var runSequence   = require('run-sequence');
 var webpack       = require('gulp-webpack');
 var path          = require('path');
+var nodemon       = require('gulp-nodemon');
 
 /**
  * Load parameters
@@ -127,21 +128,6 @@ gulp.task('webpack', function(cb) {
     .pipe(gulp.dest('./build/debug/core/public/js'));
 });
 
-gulp.task('copy', function() {
-  return gulp
-    .src([
-      'src/*/public/**/*',
-      'src/*/flux/**/*',
-      // 'src/**/*',
-      // '!src/assets/',
-      // '!src/**/*.js',
-    ])
-    // .pipe(gulpif(isDev, changed('build/debug')))
-    .pipe(gulpif(isDev, gulp.dest('build/debug')))
-    .pipe(gulpif(isTest, gulp.dest('build/test')))
-    .pipe(gulpif(isProd, gulp.dest('build/release')));
-});
-
 /**
  * compile .less files
  */
@@ -170,24 +156,24 @@ gulp.task('styles', function() {
 /**
  * compile front-end .js files
  */
-gulp.task('frontend-scripts', function() {
-  return gulp
-    .src('src/assets/js/**/*.js')
-    .pipe(gulpif(isDev, changed('build/debug/assets/js')))
-    .pipe(preprocess({
-      context: {
-        ENV: env,
-        DEV: isDev,
-        TEST: isTest,
-        PROD: isProd,
-      },
-    }))
-    .pipe(babel())
-    .pipe(gulpif(isProd || isTest, uglify()))
-    .pipe(gulpif(isDev, gulp.dest('build/debug/assets/js')))
-    .pipe(gulpif(isTest, gulp.dest('build/test/assets/js')))
-    .pipe(gulpif(isProd, gulp.dest('build/release/assets/js')));
-});
+// gulp.task('frontend-scripts', function() {
+//   return gulp
+//     .src('src/assets/js/**/*.js')
+//     .pipe(gulpif(isDev, changed('build/debug/assets/js')))
+//     .pipe(preprocess({
+//       context: {
+//         ENV: env,
+//         DEV: isDev,
+//         TEST: isTest,
+//         PROD: isProd,
+//       },
+//     }))
+//     .pipe(babel())
+//     .pipe(gulpif(isProd || isTest, uglify()))
+//     .pipe(gulpif(isDev, gulp.dest('build/debug/assets/js')))
+//     .pipe(gulpif(isTest, gulp.dest('build/test/assets/js')))
+//     .pipe(gulpif(isProd, gulp.dest('build/release/assets/js')));
+// });
 
 /**
  * compressing images
@@ -233,59 +219,103 @@ gulp.task('backend-scripts', function() {
     .pipe(gulpif(isProd, gulp.dest('build/release')));
 });
 
-/**
- * compile backend .jsx view files
- */
-gulp.task('backend-views', function() {
-  var preprocessifyOption;
-  if (isDev) {
-    preprocessifyOption = {
-      BROWSER_SYNC_SNIPPET_PORT: BROWSER_SYNC_SNIPPET_PORT,
-      DEV: true,
-    };
-  } else if (isTest) {
-    preprocessifyOption = {
-      TEST: true,
-    };
-  } else if (isProd) {
-    preprocessifyOption = {
-      PROD: true,
-    };
-  }
-
-  return browserify({
-    debug: isDev,
-    entries: './src/assets/js/index.js',
-    transform: [
-      preprocessify(preprocessifyOption),
-      babelify,
-      globify,
-    ],
-    shim: {
-      jQuery: 'global:$',
-    },
-  })
-  .bundle()
-  .pipe(source('bundle.js'))
-  .pipe(buffer())
-  .pipe(gulpif(isProd, uglify()))
-  .pipe(gulpif(isDev, gulp.dest('build/debug/assets/js')))
-  .pipe(gulpif(isTest, gulp.dest('build/test/assets/js')))
-  .pipe(gulpif(isProd, gulp.dest('build/release/assets/js')));
+gulp.task('copy', function() {
+  return gulp
+    .src([
+      'src/*/public/**/*',
+      'src/*/flux/**/*',
+      // 'src/**/*',
+      // '!src/assets/',
+      // '!src/**/*.js',
+    ])
+    .pipe(gulpif(isDev, changed('build/debug')))
+    .pipe(gulpif(isDev, gulp.dest('build/debug')))
+    .pipe(gulpif(isTest, gulp.dest('build/test')))
+    .pipe(gulpif(isProd, gulp.dest('build/release')));
 });
 
-/**
- * copy files that does not need to be preprocessed,
- * like nodejs server files, controllers, models, etc.
- */
-// gulp.task('copy', function() {
-//   return gulp.src(['src/**/*', '!src/assets/', '!src/**/*.js'])
-//     .pipe(gulpif(isDev, changed('build/debug')))
-//     .pipe(gulpif(isDev, gulp.dest('build/debug')))
-//     .pipe(gulpif(isTest, gulp.dest('build/test')))
-//     .pipe(gulpif(isProd, gulp.dest('build/release')));
-// });
+gulp.task('watch', function(cb) {
+  if (isDev) {
+    // watch .less files
+    // gulp.watch('src/assets/less/**/*.less', ['styles']);
 
+    // watch .js files
+    gulp.watch('src/**/*.js', ['backend-scripts']);
+    // gulp.watch(['src/**/*.js', '!src/assets/**/*.js'], ['backend-scripts']);
+
+    // watch .jsx files
+    gulp.watch('src/*/flux/views/**/*.jsx', ['copy', 'webpack']);
+
+    // watch image files
+    // gulp.watch('src/assets/img/**/*', ['images']);
+
+    // watch other files
+    gulp.watch([
+      'src/*/public/**/*',
+    ], ['copy']);
+  }
+
+  cb();
+});
+
+gulp.task('nodemon', function(cb) {
+  if (isDev) {
+    var started = false;
+
+    return nodemon({
+      script: 'build/debug/app.js',
+      ext: 'js',
+      ignore: [
+        'gulpfile.js',
+        'node_modules/**/*',
+        'src/**/*',
+        'build/debug/*/public/js/bundle.js',
+        'build/release/**/*',
+        'build/test/**/*',
+      ],
+    })
+    .on('start', function() {
+      if (!started) {
+        cb();
+        started = true;
+      } else {
+        // browserSync.reload();
+      }
+    })
+    .on('restart', function() {
+    });
+  } else {
+    cb();
+  }
+});
+
+gulp.task('webpack-dev-server', function(cb) {
+  if (isDev) {
+    var webpack = require('webpack');
+    var WebpackDevServer = require('webpack-dev-server');
+    var config = require('./gulp/webpack.development.js');
+
+    new WebpackDevServer(webpack(config), {
+      publicPath: 'http://localhost:3001/core/js',
+      hot: true,
+      inline: true,
+      lazy: false,
+      quiet: true,
+      noInfo: false,
+      historyApiFallback: true,
+      proxy: {
+        '*': 'http://localhost:3000',
+      },
+      // headers: {'Access-Control-Allow-Origin': '*'},
+      stats: {colors: true},
+    }).listen(3001, 'localhost', function(err, result) {
+      if (err) {
+        console.log(err);
+      }
+      console.log('Webpack-dev-server listening at localhost:3001');
+    });
+  }
+});
 /**
  * default task
  */
@@ -302,6 +332,9 @@ gulp.task('build', function(cb) {
     'webpack',
     'backend-scripts',
     'copy',
+    'watch',
+    'nodemon',
+    'webpack-dev-server',
     cb
   );
 });
