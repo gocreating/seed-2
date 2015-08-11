@@ -1,26 +1,44 @@
 import React from 'react';
+import {RouteHandler} from 'react-router';
+
 import BaseLayout from './baseLayout.jsx';
 import Navbar from '../components/navbar.jsx';
 
 export default class DefaultLayout extends React.Component {
   render() {
-    var scripts = [
+    const scripts = [
       // 'https://code.jquery.com/jquery-2.1.4.min.js',
-      '/core/js/bundle.js',
+      'http://localhost:3001/core/js/bundle.js',
       'http://localhost:3001/webpack-dev-server.js',
     ];
 
-    var styles = [
+    const styles = [
       // '/css/main.css',
     ];
+
+    const navLinks = [
+      {title: 'Home', to: '/'},
+      {title: 'About', to: '/about'},
+    ];
+
+    // return (
+    //   <BaseLayout
+    //     title="Seed"
+    //     scripts={scripts}
+    //     styles={styles} >
+    //     <Navbar />
+    //     {this.props.children}
+    //   </BaseLayout>
+    // );
 
     return (
       <BaseLayout
         title="Seed"
         scripts={scripts}
         styles={styles} >
-        <Navbar />
-        {this.props.children}
+        <Navbar
+          links={navLinks} />
+        <RouteHandler/>
       </BaseLayout>
     );
   }

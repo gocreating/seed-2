@@ -1,20 +1,25 @@
 import React from 'react';
 import {Link} from 'react-router';
 
-export default class Home extends React.Component {
+export default class Navbar extends React.Component {
   render() {
-    const links = [
-      {title: 'Home', to: '/'},
-      {title: 'About', to: '/about'},
-    ];
+    const styles = {
+      display: 'inline-block',
+      padding: '15',
+    };
+
     return <nav>
       <ul>
-        {links.map(link => (
-          <li>
+        {this.props.links.map((link, idx) => (
+          <li key={idx} style={styles}>
             <Link to={link.to}>{link.title}</Link>
           </li>
         ))}
       </ul>
     </nav>;
   }
+};
+
+Navbar.defaultProps = {
+  links: [],
 };

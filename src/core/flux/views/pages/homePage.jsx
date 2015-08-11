@@ -1,10 +1,14 @@
 import React from 'react';
-import DefaultLayout from '../layouts/defaultLayout.jsx';
 
 export default class Home extends React.Component {
+  handleClick() {
+    alert('It works');
+  }
+
   render() {
-    return <DefaultLayout>
-      Home
-    </DefaultLayout>;
+    return <div>
+      <h1>Home</h1>
+      <button onClick={this.handleClick}>Click me</button>
+    </div>;
   }
 };

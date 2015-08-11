@@ -4,6 +4,18 @@
 
 A flexible and scalable suite for building modern websites.
 
+## Features
+
+- Node & Express 4
+- React & Alt
+- Isomorphic
+- Sequalize
+- Gulp
+- Webpack
+- React Router
+- Hot reload react files
+- Cross Platforms
+
 ## Prerequisites
 
 - nodejs

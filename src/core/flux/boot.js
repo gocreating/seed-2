@@ -5,11 +5,11 @@ import routes from '../routes';
 var rootInstance = null;
 
 Router.run(routes, Router.HistoryLocation, (Handler) => {
-  // React.render(<Handler />, document);
-  rootInstance = React.render(
-    <Handler />,
-    document.getElementById('react-container')
-  );
+  rootInstance = React.render(<Handler />, document);
+  // rootInstance = React.render(
+  //   <Handler />,
+  //   document.getElementById('react-container')
+  // );
 });
 
 if (module.hot) {

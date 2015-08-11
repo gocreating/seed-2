@@ -12,19 +12,19 @@ const reactRouterController = (req, res) => {
 };
 
 export default (app) => {
-  // app.get('/*', reactRouterController);
-  app.get('/*', (req, res) => {
-    res.send(`
-      <html>
-        <head>
-        </head>
-        <body>
-          <div id="react-container"></div>
-          <script src="http://localhost:3001/core/js/bundle.js"></script>
-        </body>
-      </html>
-    `);
-  });
+  app.get('/*', reactRouterController);
+  // app.get('/*', (req, res) => {
+  //   res.send(`
+  //     <html>
+  //       <head>
+  //       </head>
+  //       <body>
+  //         <div id="react-container"></div>
+  //         <script src="http://localhost:3001/core/js/bundle.js"></script>
+  //       </body>
+  //     </html>
+  //   `);
+  // });
 
   // // general routing
   // app.get('/',      reactRouterController);
