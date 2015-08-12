@@ -7,12 +7,12 @@ require('babel/register');
  * Load plugins
  */
 var gulp          = require('gulp');
-// var less          = require('gulp-less');
+var less          = require('gulp-less');
 // var autoprefixer  = require('gulp-autoprefixer');
 // var minifycss     = require('gulp-minify-css');
 // var uglify        = require('gulp-uglify');
 // var rename        = require('gulp-rename');
-// var concat        = require('gulp-concat');
+var concat        = require('gulp-concat');
 var gulpif        = require('gulp-if');
 var changed       = require('gulp-changed');
 var del           = require('del');
@@ -28,7 +28,9 @@ var babel         = require('gulp-babel');
 var runSequence   = require('run-sequence');
 var webpack       = require('gulp-webpack');
 var path          = require('path');
+var fs            = require('fs');
 var nodemon       = require('gulp-nodemon');
+var browserSync   = require('browser-sync');
 
 /**
  * Load parameters
@@ -131,26 +133,44 @@ gulp.task('webpack', function(cb) {
 /**
  * compile .less files
  */
+
+function getFolders(dir) {
+  return fs
+    .readdirSync(dir)
+    .filter(function(file) {
+      return fs.statSync(path.join(dir, file)).isDirectory();
+    });
+}
 gulp.task('styles', function() {
-  // global style, material-ui style
-  return gulp
-    .src(['src/assets/less/main.less', 'src/assets/less/material-ui.less'])
-    .pipe(gulpif(isDev, changed('build/debug/assets/css')))
-    .pipe(less())
-    .on('error', handleErrors)
-    .pipe(autoprefixer(
-      'last 2 version',
-      'safari 5',
-      'ie 8',
-      'ie 9',
-      'opera 12.1',
-      'ios 6',
-      'android 4'
-    ))
-    .pipe(gulpif(isDev, gulp.dest('build/debug/assets/css')))
-    .pipe(gulpif(isProd || isTest, minifycss()))
-    .pipe(gulpif(isTest, gulp.dest('build/test/assets/css')))
-    .pipe(gulpif(isProd, gulp.dest('build/release/assets/css')));
+  var folders = getFolders('./src');
+  var tasks = folders.map(function(folder) {
+    var destFolder = path.join('./build/debug/', folder, '/public/css');
+    return gulp
+      .src(path.join('./src', folder, '/public/less/**/*.less'))
+      .pipe(gulpif(isDev, changed(destFolder)))
+      .pipe(less())
+      .pipe(concat(folder + '.css'))
+      .pipe(gulp.dest(destFolder));
+  });
+  return tasks;
+  // return gulp
+  //   .src(['src/*/public/less/**/*.less'])
+  //   .pipe(gulpif(isDev, changed('build/debug/assets/css')))
+  //   .pipe(less())
+  //   .on('error', handleErrors)
+  //   .pipe(autoprefixer(
+  //     'last 2 version',
+  //     'safari 5',
+  //     'ie 8',
+  //     'ie 9',
+  //     'opera 12.1',
+  //     'ios 6',
+  //     'android 4'
+  //   ))
+  //   .pipe(gulpif(isDev, gulp.dest('build/debug/assets/css')))
+  //   .pipe(gulpif(isProd || isTest, minifycss()))
+  //   .pipe(gulpif(isTest, gulp.dest('build/test/assets/css')))
+  //   .pipe(gulpif(isProd, gulp.dest('build/release/assets/css')));
 });
 
 /**
@@ -224,9 +244,8 @@ gulp.task('copy', function() {
     .src([
       'src/*/public/**/*',
       'src/*/flux/**/*',
-      // 'src/**/*',
-      // '!src/assets/',
-      // '!src/**/*.js',
+      '!src/*/public/less',
+      '!src/*/public/less/**/*',
     ])
     .pipe(gulpif(isDev, changed('build/debug')))
     .pipe(gulpif(isDev, gulp.dest('build/debug')))
@@ -237,7 +256,7 @@ gulp.task('copy', function() {
 gulp.task('watch', function(cb) {
   if (isDev) {
     // watch .less files
-    // gulp.watch('src/assets/less/**/*.less', ['styles']);
+    gulp.watch('src/*/public/less/**/*.less', ['styles']);
 
     // watch .js files
     gulp.watch('src/**/*.js', ['backend-scripts']);
@@ -252,6 +271,8 @@ gulp.task('watch', function(cb) {
     // watch other files
     gulp.watch([
       'src/*/public/**/*',
+      '!src/*/public/less',
+      '!src/*/public/less/**/*',
     ], ['copy']);
   }
 
@@ -296,7 +317,7 @@ gulp.task('webpack-dev-server', function(cb) {
     var config = require('./gulp/webpack.development.js');
 
     new WebpackDevServer(webpack(config), {
-      publicPath: 'http://localhost:3001/core/js',
+      publicPath: 'http://localhost:8080/core/js',
       hot: true,
       inline: true,
       lazy: false,
@@ -308,14 +329,36 @@ gulp.task('webpack-dev-server', function(cb) {
       },
       // headers: {'Access-Control-Allow-Origin': '*'},
       stats: {colors: true},
-    }).listen(3001, 'localhost', function(err, result) {
+    }).listen(8080, 'localhost', function(err, result) {
       if (err) {
         console.log(err);
       }
-      console.log('Webpack-dev-server listening at localhost:3001');
+      console.log('Webpack-dev-server listening at localhost:8080');
     });
   }
 });
+
+gulp.task('browser-sync', function(cb) {
+  if (isDev) {
+    browserSync.init(null, {
+      files: [
+        'build/debug/**/*.css',
+        // to prevent the server-rendered document tree differentiate with
+        // the client-rendered document tree, we have to unwatch view files
+        // on both server and client side
+        // '!build/debug/views/**/*.jsx',
+        // '!build/debug/assets/js/bundle.js',
+      ],
+      port: 7000,
+      logLevel: 'info',
+      injectChanges: true,
+      logSnippet: true,
+    });
+  } else {
+    cb();
+  }
+});
+
 /**
  * default task
  */
@@ -329,12 +372,16 @@ gulp.task('default', function() {
 gulp.task('build', function(cb) {
   runSequence(
     'clean',
+    'styles',
     'webpack',
     'backend-scripts',
     'copy',
     'watch',
-    'nodemon',
-    'webpack-dev-server',
+    [
+      'webpack-dev-server',
+      'nodemon',
+      'browser-sync',
+    ],
     cb
   );
 });

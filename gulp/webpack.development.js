@@ -13,14 +13,17 @@ var deps = [
 
 var webpackconfig = {
   entry: [
-    'webpack/hot/only-dev-server',
-    'webpack-dev-server/client?http://localhost:3001',
+    // reloads the entire page after the HMR update fails
+    'webpack/hot/dev-server',
+    // reload the page on your own
+    // 'webpack/hot/only-dev-server',
+    'webpack-dev-server/client?http://localhost:8080',
     path.resolve(__dirname, '../src/core/flux/boot.js'),
   ],
   output: {
     path: path.resolve(__dirname, '../build/debug/core/public/js'),
     filename: 'bundle.js',
-    publicPath: 'http://localhost:3001/core/js/',
+    publicPath: 'http://localhost:8080/core/js/',
   },
   resolve: {
     alias: {},
@@ -29,10 +32,16 @@ var webpackconfig = {
   module: {
     noParse: [],
     loaders: [
+      // REACT
       {
         test: /\.jsx?$/,
         loaders: ['react-hot', 'babel-loader'],
         exclude: /node_modules/,
+      },
+      // LESS
+      {
+        test: /\.less$/,
+        loader: 'style!css!less',
       },
     ],
   },

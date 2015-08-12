@@ -4,33 +4,38 @@ import Router from 'react-router';
 import routes from '../routes';
 
 export default (app) => {
+  var isSSR = false;
+
   // server-side render
-  app.get('/*', (req, res) => {
-    try {
-      Router.run(routes, req.path, (Handler, state) => {
-        const element = React.createElement(Handler);
-        const html = React.renderToString(element);
-        res.send('<!DOCTYPE html>' + html);
-      });
-    } catch (e) {
-      console.log(e);
-      res.send('404');
-    }
-  });
+  if (isSSR) {
+    app.get('/*', (req, res) => {
+      try {
+        Router.run(routes, req.path, (Handler, state) => {
+          const element = React.createElement(Handler);
+          const html = React.renderToString(element);
+          res.send('<!DOCTYPE html>' + html);
+        });
+      } catch (e) {
+        console.log(e);
+        res.send('404');
+      }
+    });
 
   // client-side render
-  // app.get('/*', (req, res) => {
-  //   res.send(`
-  //     <!DOCTYPE html>
-  //     <html>
-  //       <head>
-  //       </head>
-  //       <body>
-  //         <script src="http://localhost:3001/core/js/bundle.js"></script>
-  //       </body>
-  //     </html>
-  //   `);
-  // });
+  } else {
+    app.get('/*', (req, res) => {
+      res.send(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+          </head>
+          <body>
+            <script src="http://localhost:8080/core/js/bundle.js"></script>
+          </body>
+        </html>
+      `);
+    });
+  }
 
   // // general routing
   // app.get('/',      reactRouterController);
