@@ -11,7 +11,7 @@ var less          = require('gulp-less');
 // var autoprefixer  = require('gulp-autoprefixer');
 // var minifycss     = require('gulp-minify-css');
 // var uglify        = require('gulp-uglify');
-// var rename        = require('gulp-rename');
+var rename        = require('gulp-rename');
 var concat        = require('gulp-concat');
 var gulpif        = require('gulp-if');
 var changed       = require('gulp-changed');
@@ -125,9 +125,9 @@ gulp.task('webpack', function(cb) {
   var webpackconfig = require('./gulp/webpack.development.js');
 
   return gulp
-    .src('./src/core/flux/boot.js')
+    .src('')
     .pipe(webpack(webpackconfig))
-    .pipe(gulp.dest('./build/debug/core/public/js'));
+    .pipe(gulp.dest('./build/debug/public'));
 });
 
 /**
@@ -144,12 +144,12 @@ function getFolders(dir) {
 gulp.task('styles', function() {
   var folders = getFolders('./src');
   var tasks = folders.map(function(folder) {
-    var destFolder = path.join('./build/debug/', folder, '/public/css');
+    var destFolder = path.join('./build/debug/public/css/', folder);
     return gulp
       .src(path.join('./src', folder, '/public/less/**/*.less'))
       .pipe(gulpif(isDev, changed(destFolder)))
       .pipe(less())
-      .pipe(concat(folder + '.css'))
+      .pipe(concat('bundle.css'))
       .pipe(gulp.dest(destFolder));
   });
   return tasks;
@@ -221,7 +221,8 @@ gulp.task('backend-scripts', function() {
     .src([
       'src/**/*.js',
       '!src/public/**/*.js',
-      '!src/flux/**/*.js',
+      '!src/*/public/**/*.js',
+      '!src/*/flux/**/*.js',
     ])
     .pipe(gulpif(isDev, changed('build/debug')))
     // .pipe(preprocess({
@@ -239,11 +240,22 @@ gulp.task('backend-scripts', function() {
     .pipe(gulpif(isProd, gulp.dest('build/release')));
 });
 
+gulp.task('backend-views', function() {
+  return gulp
+    .src('./src/**/*.jsx')
+    .pipe(babel())
+    .pipe(rename({
+      extname: '.jsx',
+    }))
+    .pipe(gulp.dest('./build/debug'));
+});
+
 gulp.task('copy', function() {
   return gulp
     .src([
       'src/*/public/**/*',
       'src/*/flux/**/*',
+      '!src/*/flux/views/**/*',
       '!src/*/public/less',
       '!src/*/public/less/**/*',
     ])
@@ -290,7 +302,7 @@ gulp.task('nodemon', function(cb) {
         'gulpfile.js',
         'node_modules/**/*',
         'src/**/*',
-        'build/debug/*/public/js/bundle.js',
+        'build/debug/public/js/*/bundle.js',
         'build/release/**/*',
         'build/test/**/*',
       ],
@@ -316,8 +328,13 @@ gulp.task('webpack-dev-server', function(cb) {
     var WebpackDevServer = require('webpack-dev-server');
     var config = require('./gulp/webpack.development.js');
 
-    new WebpackDevServer(webpack(config), {
-      publicPath: 'http://localhost:8080/core/js',
+    var WEBPACK_HOST = process.env.HOST || 'localhost';
+    var WEBPACK_PORT = parseInt(process.env.PORT) + 1 || 8080;
+
+    var serverOptions = {
+      publicPath: config.output.publicPath,
+      contentBase: path.join(__dirname, './build/debug/public'),
+      // contentBase: `http://${WEBPACK_HOST}:${WEBPACK_PORT}`,
       hot: true,
       inline: true,
       lazy: false,
@@ -327,13 +344,21 @@ gulp.task('webpack-dev-server', function(cb) {
       proxy: {
         '*': 'http://localhost:3000',
       },
-      // headers: {'Access-Control-Allow-Origin': '*'},
       stats: {colors: true},
-    }).listen(8080, 'localhost', function(err, result) {
+    };
+
+    var compiler = webpack(config);
+    var webpackDevServer = new WebpackDevServer(compiler, serverOptions);
+
+    webpackDevServer.listen(WEBPACK_PORT, WEBPACK_HOST, function(err, result) {
       if (err) {
         console.log(err);
+      } else {
+        console.log(
+          'Webpack-dev-server listening on ' +
+          WEBPACK_HOST + ':' + WEBPACK_PORT
+        );
       }
-      console.log('Webpack-dev-server listening at localhost:8080');
     });
   }
 });
@@ -375,12 +400,13 @@ gulp.task('build', function(cb) {
     'styles',
     'webpack',
     'backend-scripts',
+    'backend-views',
     'copy',
     'watch',
     [
       'webpack-dev-server',
       'nodemon',
-      'browser-sync',
+      // 'browser-sync',
     ],
     cb
   );

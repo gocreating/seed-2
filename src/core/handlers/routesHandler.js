@@ -30,7 +30,7 @@ export default (app) => {
           <head>
           </head>
           <body>
-            <script src="http://localhost:8080/core/js/bundle.js"></script>
+            <script src="http://localhost:8080/js/core/bundle.js"></script>
           </body>
         </html>
       `);
