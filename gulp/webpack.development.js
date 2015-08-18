@@ -12,17 +12,19 @@ var deps = [
 ];
 
 var webpackconfig = {
-  entry: [
+  entry: {
     // reloads the entire page after the HMR update fails
-    'webpack/hot/dev-server',
+    devServer: 'webpack/hot/dev-server',
     // reload the page on your own
     // 'webpack/hot/only-dev-server',
-    'webpack-dev-server/client?http://localhost:8080',
-    path.resolve(__dirname, '../src/core/flux/boot.js'),
-  ],
+    devClient: 'webpack-dev-server/client?http://localhost:8080',
+    core: path.resolve(__dirname, '../src/core/flux/boot.js'),
+    user: path.resolve(__dirname, '../src/user/flux/boot.js'),
+    // vendors: ['react'],
+  },
   output: {
     path: path.resolve(__dirname, '../build/debug/public/'),
-    filename: 'js/core/bundle.js',
+    filename: 'js/[name]/bundle.js',
     publicPath: 'http://localhost:8080/',
   },
   resolve: {
@@ -37,7 +39,6 @@ var webpackconfig = {
       {
         test: /\.jsx?$/,
         loaders: ['react-hot', 'babel'],
-        // loaders: ['react-hot', 'jsx-loader?harmony'],
         exclude: /node_modules/,
       },
       // LESS
@@ -63,13 +64,14 @@ var webpackconfig = {
         BROWSER: JSON.stringify(true),
       },
     }),
+    new webpack.optimize.CommonsChunkPlugin('js/common.js', [/*'vendors',*/ 'core', 'user']),
   ],
 };
 
-deps.forEach(function(dep) {
-  var depPath = path.resolve(nodeModulesDir, dep);
-  webpackconfig.resolve.alias[dep.split(path.sep)[0]] = depPath;
-  webpackconfig.module.noParse.push(depPath);
-});
+// deps.forEach(function(dep) {
+//   var depPath = path.resolve(nodeModulesDir, dep);
+//   webpackconfig.resolve.alias[dep.split(path.sep)[0]] = depPath;
+//   webpackconfig.module.noParse.push(depPath);
+// });
 
 module.exports = webpackconfig;

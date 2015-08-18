@@ -4,11 +4,19 @@ import Helmet from 'react-helmet';
 
 export default class BaseLayout extends React.Component {
   render() {
-    var scripts = this.props.scripts.map((src, idx) => {
+    const defaultScripts = [
+      'http://localhost:8080/js/common.js',
+      'http://localhost:8080/webpack-dev-server.js',
+    ];
+
+    const defaultStyles = [
+    ];
+
+    let scripts = defaultScripts.concat(this.props.scripts).map((src, idx) => {
       return <script key={idx} src={src}/>;
     });
 
-    var styles = this.props.styles.map((src, idx) => {
+    let styles = defaultStyles.concat(this.props.styles).map((src, idx) => {
       return <link key={idx} rel="stylesheet" href={src}/>;
     });
 

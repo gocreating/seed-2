@@ -333,8 +333,8 @@ gulp.task('webpack-dev-server', function(cb) {
 
     var serverOptions = {
       publicPath: config.output.publicPath,
-      contentBase: path.join(__dirname, './build/debug/public'),
-      // contentBase: `http://${WEBPACK_HOST}:${WEBPACK_PORT}`,
+      // contentBase: path.join(__dirname, './build/debug/public'),
+      contentBase: 'http://' + WEBPACK_HOST + ':' + WEBPACK_PORT,
       hot: true,
       inline: true,
       lazy: false,

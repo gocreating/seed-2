@@ -13,7 +13,7 @@ import Navbar from '../components/navbar.jsx';
 // jscs:enable
 
 if (process.env.BROWSER) {
-  require('../../../public/less/test.less');
+  // require('../../../public/less/test.less');
   // require('../../../../../build/debug/public/css/core/bundle.css');
 }
 
@@ -21,19 +21,12 @@ export default class DefaultLayout extends React.Component {
   render() {
     const scripts = [
       // 'https://code.jquery.com/jquery-2.1.4.min.js',
-      'http://localhost:8080/js/core/bundle.js',
-      'http://localhost:8080/webpack-dev-server.js',
       // 'http://localhost:7000/browser-sync/browser-sync-client.2.8.2.js',
+      'http://localhost:8080/js/core/bundle.js',
     ];
 
     const styles = [
-      // 'http://localhost:8080/css/core/bundle.css',
-      // 'http://localhost:8080/css/user/bundle.css',
-    ];
-
-    const navLinks = [
-      {title: 'Home', to: '/'},
-      {title: 'About', to: '/about'},
+      'http://localhost:8080/css/core/bundle.css',
     ];
 
     return (
@@ -41,9 +34,8 @@ export default class DefaultLayout extends React.Component {
         title="Seed"
         scripts={scripts}
         styles={styles} >
-        <Navbar
-          links={navLinks} />
-        <RouteHandler/>
+        <Navbar />
+        <RouteHandler {...this.props} />
       </BaseLayout>
     );
   }

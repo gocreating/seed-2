@@ -2,23 +2,23 @@
 import React from 'react';
 import Router from 'react-router';
 import routes from '../routes';
+import {installedApps} from '../settings';
 
 export default (app) => {
-  var isSSR = false;
+  const isSSR = true;
 
   // server-side render
   if (isSSR) {
-    app.get('/*', (req, res) => {
-      try {
+    installedApps.forEach(function(appName) {
+      const routes = require('../../' + appName + '/routes');
+      app.get('/' + appName + '\/?*', (req, res) => {
         Router.run(routes, req.path, (Handler, state) => {
-          const element = React.createElement(Handler);
-          const html = React.renderToString(element);
+          // const element = React.createElement(Handler, state);
+          // const html = React.renderToString(element, state);
+          const html = React.renderToString(<Handler {...state} />);
           res.send('<!DOCTYPE html>' + html);
         });
-      } catch (e) {
-        console.log(e);
-        res.send('404');
-      }
+      });
     });
 
   // client-side render

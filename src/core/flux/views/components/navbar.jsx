@@ -13,6 +13,7 @@ export default class Navbar extends React.Component {
         {this.props.links.map((link, idx) => (
           <li key={idx} style={styles}>
             <Link to={link.to}>{link.title}</Link>
+            <a href={link.to}>{link.title}</a>
           </li>
         ))}
       </ul>
@@ -21,5 +22,9 @@ export default class Navbar extends React.Component {
 };
 
 Navbar.defaultProps = {
-  links: [],
+  links: [
+    {title: 'Home', to: '/core'},
+    {title: 'About', to: '/core/about'},
+    {title: 'User', to: '/user'},
+  ],
 };

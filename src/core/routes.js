@@ -3,10 +3,10 @@ require('babel/register');
 import React from 'react';
 import {Route, DefaultRoute, NotFoundRoute} from 'react-router';
 
-var DefaultLayout = require('./flux/views/layouts/defaultLayout.jsx');
+var AppLayout = require('./flux/views/layouts/appLayout.jsx');
 
 export default (
-  <Route path="/" handler={DefaultLayout}>
+  <Route path="/core" handler={AppLayout}>
     <DefaultRoute
       handler={require('./flux/views/pages/homePage.jsx')} />
     <Route
