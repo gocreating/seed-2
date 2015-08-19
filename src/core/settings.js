@@ -19,8 +19,15 @@ module.exports = {
       secret: 'saltForJwtToken',
     },
   },
-  installedApps: [
-    'core',
-    'user',
-  ],
+  installedApps: {
+    core: {
+      pathPrefix: '/',
+    },
+    user: {
+      pathPrefix: '/user',
+    },
+    todo: {
+      pathPrefix: '/todo',
+    },
+  },
 };

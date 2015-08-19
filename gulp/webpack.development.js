@@ -1,5 +1,12 @@
 var path = require('path');
 var webpack = require('webpack');
+var settings = require('../src/core/settings');
+
+var installedApps = settings.installedApps;
+var appArray = [];
+for (var appName in installedApps) {
+  appArray.push(appName);
+}
 
 /**
  * Ref: https://christianalfoni.github.io
@@ -18,17 +25,6 @@ var webpackconfig = {
     // reload the page on your own
     // 'webpack/hot/only-dev-server',
     // devClient: 'webpack-dev-server/client?http://localhost:8080',
-    core: [
-      path.resolve(__dirname, '../src/core/flux/boot.js'),
-      'webpack-dev-server/client?http://localhost:8080',
-      'webpack/hot/dev-server',
-    ],
-    user: [
-      path.resolve(__dirname, '../src/user/flux/boot.js'),
-      'webpack-dev-server/client?http://localhost:8080',
-      'webpack/hot/dev-server',
-    ],
-    // vendors: ['react'],
   },
   output: {
     path: path.resolve(__dirname, '../build/debug/public/'),
@@ -64,6 +60,7 @@ var webpackconfig = {
     ],
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
@@ -71,10 +68,17 @@ var webpackconfig = {
         BROWSER: JSON.stringify(true),
       },
     }),
-    new webpack.optimize.CommonsChunkPlugin('js/common.js', ['core', 'user']),
-    new webpack.HotModuleReplacementPlugin(),
+    new webpack.optimize.CommonsChunkPlugin('js/common.js', appArray),
   ],
 };
+
+appArray.forEach(function(appName) {
+  webpackconfig.entry[appName] = [
+    path.resolve(__dirname, '../src', appName, 'flux/boot.js'),
+    'webpack-dev-server/client?http://localhost:8080',
+    'webpack/hot/dev-server',
+  ];
+});
 
 deps.forEach(function(dep) {
   var depPath = path.resolve(nodeModulesDir, dep);

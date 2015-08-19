@@ -1,6 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router';
 
+var installedApps = require('../../../settings').installedApps;
+
 export default class Navbar extends React.Component {
   render() {
     const styles = {
@@ -11,8 +13,11 @@ export default class Navbar extends React.Component {
     return <nav>
       <ul>
         {this.props.links.map((link, idx) => {
+          // return <li key={idx} style={styles}>
+          //   <Link to={link.to}>{link.title}</Link>
+          //   <a href={link.to}>{link.title}</a>
+          // </li>;
           return <li key={idx} style={styles}>
-            <Link to={link.to}>{link.title}</Link>
             <a href={link.to}>{link.title}</a>
           </li>;
         })}
@@ -22,9 +27,20 @@ export default class Navbar extends React.Component {
 };
 
 Navbar.defaultProps = {
-  links: [
-    {title: 'Home', to: '/core'},
-    {title: 'About', to: '/core/about'},
-    {title: 'User', to: '/user'},
-  ],
+  links: [{
+    title: 'Home',
+    to: `${installedApps.core.pathPrefix}`,
+  }, {
+    title: 'About',
+    to: `${installedApps.core.pathPrefix}/about`.replace('//', '/'),
+  }, {
+    title: 'User',
+    to: `${installedApps.user.pathPrefix}`,
+  }, {
+    title: 'Profile',
+    to: `${installedApps.user.pathPrefix}/profile`,
+  }, {
+    title: 'Todo',
+    to: `${installedApps.todo.pathPrefix}`,
+  }, ],
 };

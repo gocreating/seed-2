@@ -9,17 +9,24 @@ export default (app) => {
 
   // server-side render
   if (isSSR) {
-    installedApps.forEach(function(appName) {
+    for (let appName in installedApps) {
+      const pathPrefix = installedApps[appName].pathPrefix;
       const routes = require('../../' + appName + '/routes');
-      app.get('/' + appName + '\/?*', (req, res) => {
+      app.get(pathPrefix + '\/?*', (req, res, next) => {
         Router.run(routes, req.path, (Handler, state) => {
           const element = React.createElement(Handler, state);
           const html = React.renderToString(element, state);
-          // const html = React.renderToString(<Handler {...state} />);
-          res.send('<!DOCTYPE html>' + html);
+          if (html.length < 120) {
+            // the path does not match current routing rules
+            // so pass down to the next app.get
+            return next();
+          } else {
+            // const html = React.renderToString(<Handler {...state} />);
+            res.send('<!DOCTYPE html>' + html);
+          }
         });
       });
-    });
+    }
 
   // client-side render
   } else {
@@ -53,8 +60,10 @@ export default (app) => {
   // app.post('/api/user',       User.api.create);
   // app.post('/api/user/login', User.api.login);
 
-  // // 404 page not found
-  // app.use((req, res, next) => {
-  //   next(new errors.pageNotFound());
-  // });
+  // 404 page not found
+  app.use((req, res, next) => {
+    console.log('404');
+    res.send('404');
+    // next(new errors.pageNotFound());
+  });
 };
