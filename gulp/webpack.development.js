@@ -14,12 +14,20 @@ var deps = [
 var webpackconfig = {
   entry: {
     // reloads the entire page after the HMR update fails
-    devServer: 'webpack/hot/dev-server',
+    // devServer: 'webpack/hot/dev-server',
     // reload the page on your own
     // 'webpack/hot/only-dev-server',
-    devClient: 'webpack-dev-server/client?http://localhost:8080',
-    core: path.resolve(__dirname, '../src/core/flux/boot.js'),
-    user: path.resolve(__dirname, '../src/user/flux/boot.js'),
+    // devClient: 'webpack-dev-server/client?http://localhost:8080',
+    core: [
+      path.resolve(__dirname, '../src/core/flux/boot.js'),
+      'webpack-dev-server/client?http://localhost:8080',
+      'webpack/hot/dev-server',
+    ],
+    user: [
+      path.resolve(__dirname, '../src/user/flux/boot.js'),
+      'webpack-dev-server/client?http://localhost:8080',
+      'webpack/hot/dev-server',
+    ],
     // vendors: ['react'],
   },
   output: {
@@ -56,7 +64,6 @@ var webpackconfig = {
     ],
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
@@ -64,14 +71,15 @@ var webpackconfig = {
         BROWSER: JSON.stringify(true),
       },
     }),
-    new webpack.optimize.CommonsChunkPlugin('js/common.js', [/*'vendors',*/ 'core', 'user']),
+    new webpack.optimize.CommonsChunkPlugin('js/common.js', ['core', 'user']),
+    new webpack.HotModuleReplacementPlugin(),
   ],
 };
 
-// deps.forEach(function(dep) {
-//   var depPath = path.resolve(nodeModulesDir, dep);
-//   webpackconfig.resolve.alias[dep.split(path.sep)[0]] = depPath;
-//   webpackconfig.module.noParse.push(depPath);
-// });
+deps.forEach(function(dep) {
+  var depPath = path.resolve(nodeModulesDir, dep);
+  webpackconfig.resolve.alias[dep.split(path.sep)[0]] = depPath;
+  webpackconfig.module.noParse.push(depPath);
+});
 
 module.exports = webpackconfig;

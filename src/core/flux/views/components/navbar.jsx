@@ -10,12 +10,12 @@ export default class Navbar extends React.Component {
 
     return <nav>
       <ul>
-        {this.props.links.map((link, idx) => (
-          <li key={idx} style={styles}>
+        {this.props.links.map((link, idx) => {
+          return <li key={idx} style={styles}>
             <Link to={link.to}>{link.title}</Link>
             <a href={link.to}>{link.title}</a>
-          </li>
-        ))}
+          </li>;
+        })}
       </ul>
     </nav>;
   }

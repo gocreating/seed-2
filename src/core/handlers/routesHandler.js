@@ -13,9 +13,9 @@ export default (app) => {
       const routes = require('../../' + appName + '/routes');
       app.get('/' + appName + '\/?*', (req, res) => {
         Router.run(routes, req.path, (Handler, state) => {
-          // const element = React.createElement(Handler, state);
-          // const html = React.renderToString(element, state);
-          const html = React.renderToString(<Handler {...state} />);
+          const element = React.createElement(Handler, state);
+          const html = React.renderToString(element, state);
+          // const html = React.renderToString(<Handler {...state} />);
           res.send('<!DOCTYPE html>' + html);
         });
       });

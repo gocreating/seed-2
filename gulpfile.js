@@ -243,6 +243,7 @@ gulp.task('backend-scripts', function() {
 gulp.task('backend-views', function() {
   return gulp
     .src('./src/**/*.jsx')
+    .pipe(gulpif(isDev, changed('./build/debug')))
     .pipe(babel())
     .pipe(rename({
       extname: '.jsx',
@@ -275,7 +276,7 @@ gulp.task('watch', function(cb) {
     // gulp.watch(['src/**/*.js', '!src/assets/**/*.js'], ['backend-scripts']);
 
     // watch .jsx files
-    gulp.watch('src/*/flux/views/**/*.jsx', ['copy', 'webpack']);
+    gulp.watch('src/*/flux/views/**/*.jsx', ['backend-views', 'webpack']);
 
     // watch image files
     // gulp.watch('src/assets/img/**/*', ['images']);
@@ -303,6 +304,7 @@ gulp.task('nodemon', function(cb) {
         'node_modules/**/*',
         'src/**/*',
         'build/debug/public/js/*/bundle.js',
+        'build/debug/public/js/common.js',
         'build/release/**/*',
         'build/test/**/*',
       ],

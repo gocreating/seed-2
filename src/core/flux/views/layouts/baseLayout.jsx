@@ -5,8 +5,10 @@ import Helmet from 'react-helmet';
 export default class BaseLayout extends React.Component {
   render() {
     const defaultScripts = [
-      'http://localhost:8080/js/common.js',
       'http://localhost:8080/webpack-dev-server.js',
+      'http://localhost:8080/js/common.js',
+      // 'http://localhost:8080/js/devServer/bundle.js',
+      // 'http://localhost:8080/js/devClient/bundle.js',
     ];
 
     const defaultStyles = [
