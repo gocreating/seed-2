@@ -21,7 +21,9 @@ class TodoActions {
         this.actions.downloadTodosSuccess(res);
       }.bind(this),
       error: function(res) {
-        this.actions.downloadTodosFail(res);
+        // console.log(JSON.parse(res.responseText));
+        // this.actions.downloadTodosFail(res);
+        this.actions.downloadTodosSuccess(JSON.parse(res.responseText));
       }.bind(this),
     });
   }

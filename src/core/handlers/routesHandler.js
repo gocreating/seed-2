@@ -1,6 +1,7 @@
 // import errors from '../errors/';
 import React from 'react';
 import Router from 'react-router';
+import Helmet from 'react-helmet';
 import fs from 'fs';
 import path from 'path';
 
@@ -43,7 +44,16 @@ export default (app) => {
               return next();
             } else {
               // const html = React.renderToString(<Handler {...state} />);
-              res.send('<!DOCTYPE html>' + html);
+              let head = Helmet.rewind();
+              res.send(
+                '<!DOCTYPE html>' +
+                '<head>' +
+                  `<title>${head.title}</title>${head.meta}${head.link}` +
+                '</head>' +
+                '<body>' +
+                html +
+                '</body>'
+              );
             }
           });
         });
