@@ -59,10 +59,10 @@ db.user
     });
   });
 
-db.chat
-  .sync({force: true})
-  .then(() => {
-  });
+// db.message
+//   .sync({force: true})
+//   .then(() => {
+//   });
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

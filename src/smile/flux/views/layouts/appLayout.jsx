@@ -2,14 +2,17 @@ import React from 'react';
 import {RouteHandler} from 'react-router';
 
 import BaseLayout from '../../../../core/flux/views/layouts/baseLayout.jsx';
-import Navbar from '../../../../core/flux/views/components/navbar.jsx';
+
+if (process.env.BROWSER) {
+  require('../../../public/less/app.less');
+}
 
 export default class DefaultLayout extends React.Component {
   render() {
     const scripts = [
       'https://code.jquery.com/jquery-2.1.4.min.js',
-      // 'http://localhost:8080/js/smile/bundle.js',
-      'http://smile.ngrok.io/js/smile/bundle.js',
+      'http://localhost:8080/js/smile/bundle.js',
+      // 'http://smile.ngrok.io/js/smile/bundle.js',
     ];
 
     const styles = [
@@ -18,10 +21,9 @@ export default class DefaultLayout extends React.Component {
 
     return (
       <BaseLayout
-        title="Seed"
+        title="Smile"
         scripts={scripts}
         styles={styles} >
-        <Navbar />
         <RouteHandler {...this.props} />
       </BaseLayout>
     );

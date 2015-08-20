@@ -5,11 +5,15 @@ export default (sequelize, DataTypes) => {
   }, {
     // Model tableName will be the same as the model name
     freezeTableName: true,
-    // classMethods: {
-    //   associate: function(models) {
-    //     User.hasMany(models.chat);
-    //   },
-    // },
+    classMethods: {
+      associate: function(models) {
+        User.hasOne(models.user, {
+          as: 'doctor',
+          foreignKey: 'doctorId',
+          allowNull: true,
+        });
+      },
+    },
   });
 
   return User;

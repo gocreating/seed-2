@@ -54,13 +54,13 @@ var webpackconfig = {
       {
         test: /\.less$/,
         loader: 'style!css!less',
-        include: path.join(__dirname, '../src/core/public'),
+        // include: path.join(__dirname, '../src/core/public'),
       },
       // CSS
       {
         test: /\.css$/,
         loader: 'style!css',
-        include: path.join(__dirname, '../build/debug/public'),
+        // include: path.join(__dirname, '../build/debug/public'),
       },
     ],
   },

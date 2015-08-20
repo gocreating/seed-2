@@ -9,6 +9,9 @@ var pathPrefix = require('../core/settings').installedApps.smile.pathPrefix;
 export default (
   <Route path={pathPrefix} handler={AppLayout}>
     <DefaultRoute
-      handler={require('./flux/views/pages/todo.jsx')} />
+      handler={require('./flux/views/pages/chatPage.jsx')} />
+    <Route
+      path="chat"
+      handler={require('./flux/views/pages/chatPage.jsx')} />
   </Route>
 );
