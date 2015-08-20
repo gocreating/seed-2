@@ -3,9 +3,19 @@ import React from 'react';
 import Router from 'react-router';
 import routes from '../routes';
 import {installedApps} from '../settings';
+var models  = require('../models');
 
 export default (app) => {
   const isSSR = true;
+
+  app.get('/api/user', (req, res) => {
+    models.user
+      .findById(1)
+      .then(function(user) {
+        console.log(user.firstName, user.lastName);
+        res.json(user);
+      });
+  });
 
   // server-side render
   if (isSSR) {
@@ -57,7 +67,7 @@ export default (app) => {
   // app.get ('/user/logout',    User.logout);
   // app.get ('/user/profile',   userModule.middleware.requireLogin,
   //                             reactRouterController);
-  // app.post('/api/user',       User.api.create);
+
   // app.post('/api/user/login', User.api.login);
 
   // 404 page not found
