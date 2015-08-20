@@ -5,7 +5,6 @@ var $ = require('jquery');
 class TodoActions {
   constructor() {
     this.generateActions(
-      // 'updateCurrentInput',
       'create',
       'downloadTodosSuccess',
       'downloadTodosFail',

@@ -1,20 +1,24 @@
 // import errors from '../errors/';
 import React from 'react';
 import Router from 'react-router';
+import fs from 'fs';
+import path from 'path';
+
 import routes from '../routes';
 import {installedApps} from '../settings';
-var models  = require('../models');
+import models from '../models';
 
 export default (app) => {
   const isSSR = true;
 
-  app.get('/api/todos', (req, res) => {
-    models.todo
-      .findAll()
-      .then(function(todos) {
-        res.json(todos);
-      });
-  });
+  for (let appName in installedApps) {
+    const appDir = path.resolve(__dirname, '../../', appName);
+    const apiRoutesPath = path.resolve(appDir, 'apiRoutes.js');
+    if (fs.existsSync(apiRoutesPath)) {
+      var apiRoutes = require(apiRoutesPath);
+      apiRoutes(app, models);
+    }
+  }
 
   // server-side render
   if (isSSR) {
