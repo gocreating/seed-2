@@ -41,5 +41,8 @@ module.exports = {
     todo: {
       pathPrefix: '/todo',
     },
+    smile: {
+      pathPrefix: '/smile',
+    },
   },
 };
