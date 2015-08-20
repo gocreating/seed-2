@@ -8,12 +8,11 @@ var models  = require('../models');
 export default (app) => {
   const isSSR = true;
 
-  app.get('/api/user', (req, res) => {
-    models.user
-      .findById(1)
-      .then(function(user) {
-        console.log(user.firstName, user.lastName);
-        res.json(user);
+  app.get('/api/todos', (req, res) => {
+    models.todo
+      .findAll()
+      .then(function(todos) {
+        res.json(todos);
       });
   });
 

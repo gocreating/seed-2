@@ -7,8 +7,19 @@ class TodoStore {
     this.todos = [];
   }
 
-  onUpdateTodo(todo) {
+  onDownloadTodosSuccess(todos) {
+    this.todos = this.todos.concat(todos);
+  }
+
+  onCreate(todo) {
     this.todos = this.todos.concat(todo);
+    console.log(this.todos);
+  }
+
+  onDestroy(id) {
+    this.todos = this.todos.filter((todo) => {
+      return todo.id != id;
+    });
   }
 }
 

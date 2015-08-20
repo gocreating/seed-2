@@ -7,6 +7,7 @@ import Navbar from '../../../../core/flux/views/components/navbar.jsx';
 export default class DefaultLayout extends React.Component {
   render() {
     const scripts = [
+      'https://code.jquery.com/jquery-2.1.4.min.js',
       'http://localhost:8080/js/todo/bundle.js',
     ];
 

@@ -31,6 +31,11 @@ var webpackconfig = {
     filename: 'js/[name]/bundle.js',
     publicPath: 'http://localhost:8080/',
   },
+  externals: {
+    // require("jquery") is external and available
+    // on the global var $
+    jquery: '$',
+  },
   resolve: {
     extensions: ['', '.js', '.jsx'],
     alias: {},
