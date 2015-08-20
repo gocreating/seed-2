@@ -32,7 +32,8 @@ Navbar.defaultProps = {
     to: `${installedApps.core && installedApps.core.pathPrefix}`,
   }, {
     title: 'About',
-    to: `${installedApps.core && installedApps.core.pathPrefix}/about`.replace('//', '/'),
+    to: `${installedApps.core && installedApps.core.pathPrefix}/about`
+        .replace('//', '/'),
   }, {
     title: 'User',
     to: `${installedApps.user && installedApps.user.pathPrefix}`,
@@ -42,5 +43,8 @@ Navbar.defaultProps = {
   }, {
     title: 'Todo',
     to: `${installedApps.todo && installedApps.todo.pathPrefix}`,
+  }, {
+    title: 'Smile',
+    to: `${installedApps.smile && installedApps.smile.pathPrefix}`,
   }, ],
 };

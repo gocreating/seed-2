@@ -45,6 +45,25 @@ Object.keys(db).forEach(function(modelName) {
   }
 });
 
+db.user
+  .sync({force: true})
+  .then(() => {
+    // Table created
+    db.user.create({
+      name: 'user A',
+      group: 'patient',
+    });
+    db.user.create({
+      name: 'user B',
+      group: 'doctor',
+    });
+  });
+
+// db.message
+//   .sync({force: true})
+//   .then(() => {
+//   });
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

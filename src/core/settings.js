@@ -15,7 +15,7 @@ module.exports = {
       dialect: 'sqlite',
       // the path is relative to 'build/debug/core'
       storage: path.resolve(__dirname, '../../../db.development.sqlite'),
-      logging: false,
+      // logging: false,
       pool: {
         max: 5,
         min: 0,
@@ -40,6 +40,9 @@ module.exports = {
     },
     todo: {
       pathPrefix: '/todo',
+    },
+    smile: {
+      pathPrefix: '/smile',
     },
   },
 };
