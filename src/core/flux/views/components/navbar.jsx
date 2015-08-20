@@ -29,18 +29,18 @@ export default class Navbar extends React.Component {
 Navbar.defaultProps = {
   links: [{
     title: 'Home',
-    to: `${installedApps.core.pathPrefix}`,
+    to: `${installedApps.core && installedApps.core.pathPrefix}`,
   }, {
     title: 'About',
-    to: `${installedApps.core.pathPrefix}/about`.replace('//', '/'),
+    to: `${installedApps.core && installedApps.core.pathPrefix}/about`.replace('//', '/'),
   }, {
     title: 'User',
-    to: `${installedApps.user.pathPrefix}`,
+    to: `${installedApps.user && installedApps.user.pathPrefix}`,
   }, {
     title: 'Profile',
-    to: `${installedApps.user.pathPrefix}/profile`,
+    to: `${installedApps.user && installedApps.user.pathPrefix}/profile`,
   }, {
     title: 'Todo',
-    to: `${installedApps.todo.pathPrefix}`,
+    to: `${installedApps.todo && installedApps.todo.pathPrefix}`,
   }, ],
 };

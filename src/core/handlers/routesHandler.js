@@ -24,21 +24,30 @@ export default (app) => {
   if (isSSR) {
     for (let appName in installedApps) {
       const pathPrefix = installedApps[appName].pathPrefix;
-      const routes = require('../../' + appName + '/routes');
-      app.get(pathPrefix + '\/?*', (req, res, next) => {
-        Router.run(routes, req.path, (Handler, state) => {
-          const element = React.createElement(Handler, state);
-          const html = React.renderToString(element, state);
-          if (html.length < 120) {
-            // the path does not match current routing rules
-            // so pass down to the next app.get
-            return next();
-          } else {
-            // const html = React.renderToString(<Handler {...state} />);
-            res.send('<!DOCTYPE html>' + html);
-          }
+      const routesPath = path.resolve(
+        __dirname,
+        '../../',
+        appName,
+        'routes.js'
+      );
+
+      if (fs.existsSync(routesPath)) {
+        const routes = require(routesPath);
+        app.get(pathPrefix + '\/?*', (req, res, next) => {
+          Router.run(routes, req.path, (Handler, state) => {
+            const element = React.createElement(Handler, state);
+            const html = React.renderToString(element, state);
+            if (html.length < 120) {
+              // the path does not match current routing rules
+              // so pass down to the next app.get
+              return next();
+            } else {
+              // const html = React.renderToString(<Handler {...state} />);
+              res.send('<!DOCTYPE html>' + html);
+            }
+          });
         });
-      });
+      }
     }
 
   // client-side render
