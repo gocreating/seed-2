@@ -13,7 +13,6 @@ class TodoStore {
 
   onCreate(todo) {
     this.todos = this.todos.concat(todo);
-    console.log(this.todos);
   }
 
   onDestroy(id) {
