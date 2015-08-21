@@ -34,14 +34,51 @@ export default (app, models) => {
   });
 
   app.post('/api/messages', (req, res) => {
-    models.message
-      .create({
-        text: req.body.text,
-        fromUserId: req.body.fromUserId,
-        toUserId: req.body.toUserId,
+    var request = require('superagent');
+    let fromLocale, toLocale;
+
+    models.user
+      .findOne({
+        where: {
+          id: req.body.fromUserId,
+        },
+        attributes: ['locale'],
       })
-      .then((message) => {
-        res.json(message);
+      .then(user => {
+        fromLocale = user.locale;
+
+        models.user
+          .findOne({
+            where: {
+              id: req.body.toUserId,
+            },
+            attributes: ['locale'],
+          })
+          .then(user => {
+            toLocale = user.locale;
+
+            request
+              .get('https://translate.yandex.net/api/v1.5/tr.json/translate')
+              .query({
+                key: 'trnsl.1.1.20150821T163702Z.60c40f1d9b7d0117.a136fcf6a49ea0e5e37121b2459249c5b18f8fbf',
+                lang: fromLocale + '-' + toLocale,
+                text: req.body.text,
+              })
+              .end(function(err, data) {
+                console.log(data.body);
+                const translatedText = data.body.text[0];
+                models.message
+                  .create({
+                    text: req.body.text,
+                    textTranslate: translatedText,
+                    fromUserId: req.body.fromUserId,
+                    toUserId: req.body.toUserId,
+                  })
+                  .then((message) => {
+                    res.json(message);
+                  });
+              });
+          });
       });
   });
 

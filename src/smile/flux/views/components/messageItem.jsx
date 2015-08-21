@@ -9,7 +9,7 @@ export default class MessageItem extends React.Component {
         UserStore.getState().fromUserName:
         UserStore.getState().toUserName
       }:
-      {this.props.text}
+      {this.props.text}({this.props.textTranslate})
     </li>;
   }
 };
