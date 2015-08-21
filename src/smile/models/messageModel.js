@@ -3,6 +3,7 @@ export default (sequelize, DataTypes) => {
 
   const Message = sequelize.define('message', {
     text: DataTypes.STRING,
+    textTranslate: DataTypes.STRING,
   }, {
     // Model tableName will be the same as the model name
     freezeTableName: true,

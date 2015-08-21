@@ -50,12 +50,14 @@ db.user
   .then(() => {
     // Table created
     db.user.create({
-      name: 'user A',
+      name: 'Patient A',
       group: 'patient',
+      locale: 'ms',
     });
     db.user.create({
-      name: 'user B',
+      name: 'Doctor B',
       group: 'doctor',
+      locale: 'en',
     });
   });
 
