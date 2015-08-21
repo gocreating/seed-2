@@ -22,6 +22,7 @@ class InformationPage extends React.Component {
     return <SmileLayout>
       <div className="information-container">
         <h1>健康資訊</h1>
+        <ArticleListContainer articles={this.props.article.articles} />
       </div>
     </SmileLayout>;
   }
