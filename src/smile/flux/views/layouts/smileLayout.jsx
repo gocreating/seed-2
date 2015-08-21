@@ -1,8 +1,13 @@
 import React from 'react';
+import UserActions from '../../actions/UserActions';
 import Header from '../components/header.jsx';
 import NavTab from '../components/navTab.jsx';
 
-export default class SmileLayout extends React.Component {
+class SmileLayout extends React.Component {
+  componentDidMount() {
+    UserActions.setId();
+  }
+
   render() {
     return <div>
       <Header />
@@ -11,3 +16,5 @@ export default class SmileLayout extends React.Component {
     </div>;
   }
 };
+
+export default SmileLayout;

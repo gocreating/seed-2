@@ -1,5 +1,13 @@
 import alt from '../alt';
 
+function getParameterByName(name) {
+  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+  var results = regex.exec(location.search);
+  return results === null ?
+    '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
 class UserActions {
   constructor() {
     this.generateActions(
@@ -9,7 +17,12 @@ class UserActions {
     );
   }
 
-  setId(ids) {
+  setId() {
+    const ids = {
+      fromId: getParameterByName('from'),
+      toId: getParameterByName('to'),
+    };
+
     this.actions.setIdSuccess({...ids});
     $.ajax({
       method: 'GET',

@@ -10,7 +10,8 @@ class MessageStore {
   }
 
   onDownloadSuccess(messages) {
-    this.messages = this.messages.concat(messages);
+    // this.messages = this.messages.concat(messages);
+    this.messages = messages;
   }
 
   onUpdateUserInput(userInput) {

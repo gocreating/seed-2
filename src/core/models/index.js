@@ -64,6 +64,11 @@ db.user
 //   .then(() => {
 //   });
 
+// db.article
+//   .sync({force: true})
+//   .then(() => {
+//   });
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
