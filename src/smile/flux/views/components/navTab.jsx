@@ -20,7 +20,7 @@ class NavTab extends React.Component {
     const userParams = this.props.userParams;
     const links = [{
       title: 'Record',
-      to: `/smile/record`,
+      to: `/smile/record?${userParams}`,
     }, {
       title: 'Blog',
       to: `/smile/blog?${userParams}`,
@@ -29,10 +29,10 @@ class NavTab extends React.Component {
       to: `/smile/chat?${userParams}`,
     }, {
       title: 'Information',
-      to: `/smile/information`,
+      to: `/smile/information?${userParams}`,
     }, {
       title: 'Profile',
-      to: `/smile/profile`,
+      to: `/smile/profile?${userParams}`,
     }, ];
 
     return (

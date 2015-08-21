@@ -2,26 +2,26 @@ import React from 'react';
 import Router from 'react-router';
 import ReactStateMagicMixin from 'alt/mixins/ReactStateMagicMixin';
 import SmileLayout from '../layouts/smileLayout.jsx';
-import ArticleStore from '../../stores/ArticleStore';
-import ArticleActions from '../../actions/ArticleActions';
+import InformationStore from '../../stores/InformationStore';
+import InformationActions from '../../actions/InformationActions';
 
 module.exports = React.createClass({
   mixins: [ReactStateMagicMixin, Router.State],
   statics: {
     registerStores: {
-      articleStore: ArticleStore,
+      informationStore: InformationStore,
     },
   },
   componentDidMount: function() {
-    ArticleActions.downloadById(
-      this.getParams().articleId
+    InformationActions.downloadById(
+      this.getParams().informationId
     );
   },
   render: function() {
     return <SmileLayout>
-      <div className="blog-container">
-        <h1>文章</h1>
-        <p>{this.state.articleStore.article.content}</p>
+      <div className="information-container">
+        <h1>{this.state.informationStore.article.title}</h1>
+        <p>{this.state.informationStore.article.content}</p>
       </div>
     </SmileLayout>;
   },

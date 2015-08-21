@@ -1,28 +1,28 @@
 import React from 'react';
 import connectToStores from 'alt/utils/connectToStores';
-import UserStore from '../../stores/UserStore';
-import ArticleStore from '../../stores/ArticleStore';
-import ArticleActions from '../../actions/ArticleActions';
-import ArticleListContainer from '../components/articleListContainer.jsx';
+import InformationStore from '../../stores/InformationStore';
+import InformationActions from '../../actions/InformationActions';
+import InformationListContainer from '../components/informationListContainer.jsx';
 import SmileLayout from '../layouts/smileLayout.jsx';
 
 class InformationPage extends React.Component {
   static getStores() {
-    return [ArticleStore, UserStore];
+    return [InformationStore];
   }
 
   static getPropsFromStores() {
-    return {
-      article: ArticleStore.getState(),
-      user: UserStore.getState(),
-    };
+    return InformationStore.getState();
+  }
+
+  componentDidMount() {
+    InformationActions.downloadAll();
   }
 
   render() {
     return <SmileLayout>
       <div className="information-container">
         <h1>健康資訊</h1>
-        <ArticleListContainer articles={this.props.article.articles} />
+        <InformationListContainer informations={this.props.articles} />
       </div>
     </SmileLayout>;
   }
