@@ -9,15 +9,7 @@ import SmileLayout from '../layouts/smileLayout.jsx';
 
 const ENTER_KEY_CODE = 13;
 
-function getParameterByName(name) {
-  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-  var results = regex.exec(location.search);
-  return results === null ?
-    '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-}
-
-class ChatPage extends React.Component {
+class BlogPage extends React.Component {
   static getStores() {
     return [MessageStore, UserStore];
   }
@@ -51,7 +43,7 @@ class ChatPage extends React.Component {
   render() {
     return <SmileLayout>
       <div className="chat-container">
-        <h1>醫師諮詢</h1>
+        <h1>交流</h1>
         <ul className="message-list">
           {this.props.messages.map((msg, idx) => (
             <MessageItem key={idx} {...msg} />
@@ -67,4 +59,4 @@ class ChatPage extends React.Component {
   }
 };
 
-export default connectToStores(ChatPage);
+export default connectToStores(BlogPage);
