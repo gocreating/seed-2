@@ -5,7 +5,7 @@ export default class MessageItem extends React.Component {
   render() {
     return <li>
       {
-        this.props.fromUserId === UserStore.getState().userId?
+        this.props.fromUserId == UserStore.getState().fromId?
         UserStore.getState().fromUserName:
         UserStore.getState().toUserName
       }:
