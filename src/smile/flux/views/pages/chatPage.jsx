@@ -54,17 +54,19 @@ class ChatPage extends React.Component {
 
   render() {
     return <SmileLayout>
-      <h1>醫師諮詢</h1>
-      <ul>
-        {this.props.messages.map((msg, idx) => (
-          <MessageItem key={idx} {...msg} />
-        ))}
-      </ul>
-      <input
-        type="text"
-        value={this.props.userInput}
-        onChange={this._onChange.bind(this)}
-        onKeyDown={this._onKeyDown.bind(this)} />
+      <div className="chat-container">
+        <h1>醫師諮詢</h1>
+        <ul className="message-list">
+          {this.props.messages.map((msg, idx) => (
+            <MessageItem key={idx} {...msg} />
+          ))}
+        </ul>
+        <input
+          type="text"
+          value={this.props.userInput}
+          onChange={this._onChange.bind(this)}
+          onKeyDown={this._onKeyDown.bind(this)} />
+      </div>
     </SmileLayout>;
   }
 };
