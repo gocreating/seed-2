@@ -8,7 +8,6 @@ class MessageActions {
       'downloadSuccess',
       'downloadFail',
       'updateUserInput',
-      'updateUserInput',
       'sendSuccess',
       'sendFail'
     );
