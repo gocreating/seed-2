@@ -11,7 +11,7 @@ const ENTER_KEY_CODE = 13;
 
 class BlogPage extends React.Component {
   static getStores() {
-    return [MessageStore];
+    return [MessageStore, UserStore];
   }
 
   static getPropsFromStores() {
@@ -19,7 +19,6 @@ class BlogPage extends React.Component {
   }
 
   componentDidMount() {
-    UserActions.setId();
     MessageActions.download(
       UserStore.getState().fromId,
       UserStore.getState().toId

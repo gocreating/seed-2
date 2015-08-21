@@ -27,10 +27,6 @@ class ChatPage extends React.Component {
   }
 
   componentDidMount() {
-    UserActions.setId({
-      fromId: getParameterByName('from'),
-      toId: getParameterByName('to'),
-    });
     MessageActions.download(
       UserStore.getState().fromId,
       UserStore.getState().toId
