@@ -1,4 +1,7 @@
 export default (app, models) => {
+  /**
+   * User
+   */
   app.get('/api/users/:userId/name', (req, res) => {
     models.user
       .findOne({
@@ -12,6 +15,9 @@ export default (app, models) => {
       });
   });
 
+  /**
+   * Chat
+   */
   app.get('/api/messages', (req, res) => {
     models.message
       .findAll({
@@ -45,6 +51,9 @@ export default (app, models) => {
       });
   });
 
+  /**
+   * Blog
+   */
   app.get('/api/articles', (req, res) => {
     models.article
       .findAll()
@@ -70,6 +79,25 @@ export default (app, models) => {
       })
       .then((article) => {
         res.json(article);
+      });
+  });
+
+  /**
+   * Information
+   */
+  app.get('/api/informations', (req, res) => {
+    models.information
+      .findAll()
+      .then((informations) => {
+        res.json(informations || []);
+      });
+  });
+
+  app.get('/api/informations/:informationId(\\d+)', (req, res) => {
+    models.information
+      .findById(req.params.informationId)
+      .then((information) => {
+        res.json(information || {});
       });
   });
 }
