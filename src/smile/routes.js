@@ -10,9 +10,18 @@ export default (
   <Route path={pathPrefix} handler={AppLayout}>
     <DefaultRoute
       handler={require('./flux/views/pages/chatPage.jsx')} />
-    <Route
-      path="blog"
-      handler={require('./flux/views/pages/blogPage.jsx')} />
+
+    <Route path="blog">
+      <DefaultRoute
+        handler={require('./flux/views/pages/blogPage.jsx')} />
+      <Route
+        path="new"
+        handler={require('./flux/views/pages/newArticlePage.jsx')} />
+      <Route
+        path=":articleId"
+        handler={require('./flux/views/pages/articlePage.jsx')} />
+    </Route>
+
     <Route
       path="chat"
       handler={require('./flux/views/pages/chatPage.jsx')} />
