@@ -6,13 +6,16 @@ class ArticleStore {
     this.bindActions(ArticleActions);
     this.newTitle = '';
     this.newContent = '';
-    this.readTitle = '';
-    this.readContent = '';
+    this.article = {};
     this.articles = [];
   }
 
   onDownloadAllSuccess(articles) {
     this.articles = articles;
+  }
+
+  onDownloadByIdSuccess(article) {
+    this.article = article;
   }
 
   onUpdateNewTitle(title) {

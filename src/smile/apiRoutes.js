@@ -53,6 +53,14 @@ export default (app, models) => {
       });
   });
 
+  app.get('/api/articles/:articleId(\\d+)', (req, res) => {
+    models.article
+      .findById(req.params.articleId)
+      .then((article) => {
+        res.json(article || {});
+      });
+  });
+
   app.post('/api/articles', (req, res) => {
     models.article
       .create({

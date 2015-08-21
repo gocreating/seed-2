@@ -7,7 +7,10 @@ class ArticleActions {
     this.generateActions(
       'downloadAllSuccess',
       'downloadAllFail',
-      'updateUserInput',
+      'downloadByIdSuccess',
+      'downloadByIdFail',
+      'updateNewTitle',
+      'updateNewContent',
       'postSuccess',
       'postFail'
     );
@@ -22,6 +25,19 @@ class ArticleActions {
       }.bind(this),
       error: function(res) {
         this.actions.downloadAllFail(res);
+      }.bind(this),
+    });
+  }
+
+  downloadById(id) {
+    return $.ajax({
+      method: 'GET',
+      url: '/api/articles/' + id,
+      success: function(res) {
+        this.actions.downloadByIdSuccess(res);
+      }.bind(this),
+      error: function(res) {
+        this.actions.downloadByIdFail(res);
       }.bind(this),
     });
   }
