@@ -25,5 +25,9 @@ export default (
     <Route
       path="chat"
       handler={require('./flux/views/pages/chatPage.jsx')} />
+
+    <Route
+      path="information"
+      handler={require('./flux/views/pages/informationPage.jsx')} />
   </Route>
 );

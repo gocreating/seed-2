@@ -19,8 +19,10 @@ module.exports = React.createClass({
   },
   render: function() {
     return <SmileLayout>
-      <h1>文章</h1>
-      <p>{this.state.articleStore.article.content}</p>
+      <div className="blog-container">
+        <h1>文章</h1>
+        <p>{this.state.articleStore.article.content}</p>
+      </div>
     </SmileLayout>;
   },
 });
