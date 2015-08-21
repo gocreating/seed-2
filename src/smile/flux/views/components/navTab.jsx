@@ -20,7 +20,7 @@ class NavTab extends React.Component {
     const userParams = this.props.userParams;
     const links = [{
       title: 'Record',
-      to: `/smile/record`,
+      to: `/smile/record?${userParams}`,
     }, {
       title: 'Blog',
       to: `/smile/blog?${userParams}`,
