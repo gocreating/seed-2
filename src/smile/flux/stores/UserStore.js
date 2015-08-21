@@ -10,12 +10,14 @@ class UserStore {
     this.fromUserName = '';
     this.toId = 0;
     this.toUserName = '';
+    this.userParams = 'from=1&to=2';
   }
 
   onSetIdSuccess(data) {
     this.userId = parseInt(data.fromId);
     this.fromId = parseInt(data.fromId);
     this.toId = parseInt(data.toId);
+    this.userParams = `from=${this.fromId}&to=${this.toId}`;
   }
 
   onSetName(data) {

@@ -17,7 +17,7 @@ class NavTab extends React.Component {
   }
 
   render() {
-    const userParams = `from=${this.props.fromId}&to=${this.props.toId}`;
+    const userParams = this.props.userParams;
     const links = [{
       title: 'Record',
       to: `/smile/record`,
@@ -46,24 +46,5 @@ class NavTab extends React.Component {
     );
   }
 };
-
-// NavTab.defaultProps = {
-//   links: [{
-//     title: 'Record',
-//     to: `/smile/record`,
-//   }, {
-//     title: 'Blog',
-//     to: `/smile/blog?from=${UserStore.getState().fromId}&to=${UserStore.getState().toId}`,
-//   }, {
-//     title: 'Chat',
-//     to: `/smile/chat`,
-//   }, {
-//     title: 'Information',
-//     to: `/smile/information`,
-//   }, {
-//     title: 'Profile',
-//     to: `/smile/profile`,
-//   }, ],
-// };
 
 export default connectToStores(NavTab);

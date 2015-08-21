@@ -1,24 +1,34 @@
 import alt from '../alt';
 import ArticleActions from '../actions/ArticleActions'
 
-class MessageStore {
+class ArticleStore {
   constructor() {
     this.bindActions(ArticleActions);
-    this.userInput = '';
+    this.newTitle = '';
+    this.newContent = '';
+    this.article = {};
     this.articles = [];
   }
 
-  onDownloadSuccess(articles) {
+  onDownloadAllSuccess(articles) {
     this.articles = articles;
   }
 
-  onUpdateUserInput(userInput) {
-    this.userInput = userInput;
+  onDownloadByIdSuccess(article) {
+    this.article = article;
   }
 
-  onSendSuccess(msg) {
-    this.articles.push(msg);
+  onUpdateNewTitle(title) {
+    this.newTitle = title;
+  }
+
+  onUpdateNewContent(content) {
+    this.newContent = content;
+  }
+
+  onPostSuccess(article) {
+    this.articles.push(article);
   }
 }
 
-export default alt.createStore(MessageStore, 'MessageStore');
+export default alt.createStore(ArticleStore, 'ArticleStore');

@@ -1,59 +1,34 @@
 import React from 'react';
+import {Link} from 'react-router';
 import connectToStores from 'alt/utils/connectToStores';
-import MessageStore from '../../stores/MessageStore';
+import ArticleStore from '../../stores/ArticleStore';
 import UserStore from '../../stores/UserStore';
-import MessageActions from '../../actions/MessageActions';
-import UserActions from '../../actions/UserActions';
-import MessageItem from '../components/messageItem.jsx';
+import ArticleActions from '../../actions/ArticleActions';
+import ArticleListContainer from '../components/articleListContainer.jsx';
 import SmileLayout from '../layouts/smileLayout.jsx';
-
-const ENTER_KEY_CODE = 13;
 
 class BlogPage extends React.Component {
   static getStores() {
-    return [MessageStore, UserStore];
+    return [ArticleStore, UserStore];
   }
 
   static getPropsFromStores() {
-    return MessageStore.getState();
+    return {
+      article: ArticleStore.getState(),
+      user: UserStore.getState(),
+    };
   }
 
   componentDidMount() {
-    MessageActions.download(
-      UserStore.getState().fromId,
-      UserStore.getState().toId
-    );
-  }
-
-  _onChange(e) {
-    MessageActions.updateUserInput(e.target.value);
-  }
-
-  _onKeyDown(e) {
-    if (e.keyCode === ENTER_KEY_CODE) {
-      MessageActions.send(
-        UserStore.getState().fromId,
-        UserStore.getState().toId,
-        this.props.userInput
-      );
-      MessageActions.updateUserInput('');
-    }
+    ArticleActions.downloadAll();
   }
 
   render() {
     return <SmileLayout>
-      <div className="chat-container">
+      <div className="blog-container">
         <h1>交流</h1>
-        <ul className="message-list">
-          {this.props.messages.map((msg, idx) => (
-            <MessageItem key={idx} {...msg} />
-          ))}
-        </ul>
-        <input
-          type="text"
-          value={this.props.userInput}
-          onChange={this._onChange.bind(this)}
-          onKeyDown={this._onKeyDown.bind(this)} />
+        <ArticleListContainer articles={this.props.article.articles} />
+        <Link to={`/smile/blog/new?${this.props.user.userParams}`}>新增</Link>
       </div>
     </SmileLayout>;
   }
