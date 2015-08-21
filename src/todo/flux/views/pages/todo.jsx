@@ -1,26 +1,22 @@
 import React from 'react';
+import connectToStores from 'alt/utils/connectToStores';
 import TodoStore from '../../stores/TodoStore';
 import TodoActions from '../../actions/TodoActions';
+var TodoItem = require('../components/todoItem.jsx');
 
 const ENTER_KEY_CODE = 13;
 
-export default class Todo extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = TodoStore.getState();
-    this._onChange = this._onChange.bind(this);
+class Todo extends React.Component {
+  static getStores() {
+    return [TodoStore];
+  }
+
+  static getPropsFromStores() {
+    return TodoStore.getState();
   }
 
   componentDidMount() {
-    TodoStore.listen(this._onChange);
-  }
-
-  componentWillUnmount() {
-    TodoStore.unlisten(this._onChange);
-  }
-
-  _onChange() {
-    this.setState(TodoStore.getState());
+    TodoActions.downloadTodos();
   }
 
   _onKeyDown(event) {
@@ -29,7 +25,10 @@ export default class Todo extends React.Component {
         +new Date() +
         Math.floor(Math.random() * 999999)
       ).toString(36);
-      TodoActions.updateTodo(id, event.target.value);
+      TodoActions.create({
+        id: id,
+        text: event.target.value,
+      });
     }
   }
 
@@ -37,13 +36,16 @@ export default class Todo extends React.Component {
     return <div>
       <h1>Todo</h1>
       <input
-          type="text"
-          onKeyDown={this._onKeyDown} />
+        type="text"
+        value={this.props.currentInput}
+        onKeyDown={this._onKeyDown.bind(this)} />
       <ul>
-        {this.state.todos.map((todo) => (
-          <li key={todo.id}>{todo.text}</li>
+        {this.props.todos.map((todo) => (
+          <TodoItem key={todo.id} id={todo.id} text={todo.text} />
         ))}
       </ul>
     </div>;
   }
 };
+
+export default connectToStores(Todo);

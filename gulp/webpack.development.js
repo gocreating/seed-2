@@ -31,6 +31,11 @@ var webpackconfig = {
     filename: 'js/[name]/bundle.js',
     publicPath: 'http://localhost:8080/',
   },
+  externals: {
+    // require("jquery") is external and available
+    // on the global var $
+    jquery: '$',
+  },
   resolve: {
     extensions: ['', '.js', '.jsx'],
     alias: {},
@@ -49,13 +54,13 @@ var webpackconfig = {
       {
         test: /\.less$/,
         loader: 'style!css!less',
-        include: path.join(__dirname, '../src/core/public'),
+        // include: path.join(__dirname, '../src/core/public'),
       },
       // CSS
       {
         test: /\.css$/,
         loader: 'style!css',
-        include: path.join(__dirname, '../build/debug/public'),
+        // include: path.join(__dirname, '../build/debug/public'),
       },
     ],
   },

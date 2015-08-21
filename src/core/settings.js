@@ -1,3 +1,5 @@
+var path = require('path');
+
 module.exports = {
   server: {
     port: {
@@ -9,7 +11,17 @@ module.exports = {
   // connection string of mongodb: 'mongodb://root@localhost/seed'
   // connection string of sqlite: 'sqlite://db.sqlite'
   db: {
-    development: 'sqlite://db.development.sqlite',
+    development: {
+      dialect: 'sqlite',
+      // the path is relative to 'build/debug/core'
+      storage: path.resolve(__dirname, '../../../db.development.sqlite'),
+      // logging: false,
+      pool: {
+        max: 5,
+        min: 0,
+        idle: 10000,
+      },
+    },
     test: 'sqlite://db.test.sqlite',
     production: 'sqlite://db.production.sqlite',
   },
@@ -28,6 +40,9 @@ module.exports = {
     },
     todo: {
       pathPrefix: '/todo',
+    },
+    smile: {
+      pathPrefix: '/smile',
     },
   },
 };
