@@ -80,10 +80,10 @@ appArray.forEach(function(appName) {
   ];
 });
 
-deps.forEach(function(dep) {
-  var depPath = path.resolve(nodeModulesDir, dep);
-  webpackconfig.resolve.alias[dep.split(path.sep)[0]] = depPath;
-  webpackconfig.module.noParse.push(depPath);
-});
+// deps.forEach(function(dep) {
+//   var depPath = path.resolve(nodeModulesDir, dep);
+//   webpackconfig.resolve.alias[dep.split(path.sep)[0]] = depPath;
+//   webpackconfig.module.noParse.push(depPath);
+// });
 
 module.exports = webpackconfig;
