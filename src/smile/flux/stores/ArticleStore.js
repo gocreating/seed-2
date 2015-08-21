@@ -1,15 +1,15 @@
 import alt from '../alt';
-import MessageActions from '../actions/MessageActions'
+import ArticleActions from '../actions/ArticleActions'
 
 class MessageStore {
   constructor() {
-    this.bindActions(MessageActions);
+    this.bindActions(ArticleActions);
     this.userInput = '';
-    this.messages = [];
+    this.articles = [];
   }
 
-  onDownloadSuccess(messages) {
-    this.messages = messages;
+  onDownloadSuccess(articles) {
+    this.articles = articles;
   }
 
   onUpdateUserInput(userInput) {
@@ -17,7 +17,7 @@ class MessageStore {
   }
 
   onSendSuccess(msg) {
-    this.messages.push(msg);
+    this.articles.push(msg);
   }
 }
 

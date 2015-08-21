@@ -44,4 +44,24 @@ export default (app, models) => {
         res.json(message);
       });
   });
+
+  app.get('/api/articles', (req, res) => {
+    models.article
+      .findAll()
+      .then((articles) => {
+        res.json(articles || []);
+      });
+  });
+
+  app.post('/api/articles', (req, res) => {
+    models.article
+      .create({
+        title: req.body.title,
+        content: req.body.content,
+        authorUserId: req.body.authorUserId,
+      })
+      .then((article) => {
+        res.json(article);
+      });
+  });
 }
