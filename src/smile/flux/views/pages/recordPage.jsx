@@ -10,33 +10,11 @@ import SmileLayout from '../layouts/smileLayout.jsx';
 
 export default class RecordPage extends React.Component{
 
-	static getInitialState(){
-        return {
-            activeIndex: 1
-        }
-    }
-
-    static handleChange (index){
-        this.setState({
-            activeIndex: index
-        });
-    }
-
 	render() {
-		return(
-				<TabPanel activeIndex={this.state.activeIndex}
-                onChange={this.handleChange}
-                titleStyle={{padding: 10}}
-            	>
-                <div title="One">first</div>
-                <div title="Two">second</div>
-                <div title="Three">third</div>
-            </TabPanel>
-		)
-		// return <SmileLayout>
-		// <div className="chat-container">
-		
-		// </div>
-		// </SmileLayout>;
+		return <SmileLayout>
+		<div className="chat-container">
+		<h1>Hello world</h1>
+		</div>
+		</SmileLayout>;
 	}
 };
