@@ -18,10 +18,13 @@ module.exports = React.createClass({
     );
   },
   render: function() {
+    const name = this.state.articleStore.article.author?
+      this.state.articleStore.article.author.name:
+      '';
     return <SmileLayout>
       <div className="blog-container">
         <h1>{this.state.articleStore.article.title}</h1>
-        <p>- {this.state.articleStore.article.author.name}</p>
+        <p>- {name}</p>
         <p>{this.state.articleStore.article.content}</p>
       </div>
     </SmileLayout>;
