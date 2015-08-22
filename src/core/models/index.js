@@ -83,10 +83,10 @@ db.article
     });
   });
 
-// db.information
-//   .sync({force: true})
-//   .then(() => {
-//   });
+db.information
+  .sync({force: true})
+  .then(() => {
+  });
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

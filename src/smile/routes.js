@@ -28,7 +28,6 @@ export default (
 
     <Route path="information">
       <DefaultRoute
-        path="information"
         handler={require('./flux/views/pages/informationPage.jsx')} />
       <Route
         path=":informationId"
