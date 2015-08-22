@@ -21,6 +21,7 @@ module.exports = React.createClass({
     return <SmileLayout>
       <div className="blog-container">
         <h1>{this.state.articleStore.article.title}</h1>
+        <p>- {this.state.articleStore.article.author.name}</p>
         <p>{this.state.articleStore.article.content}</p>
       </div>
     </SmileLayout>;

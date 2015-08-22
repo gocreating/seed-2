@@ -17,6 +17,10 @@ export default (sequelize, DataTypes) => {
           foreignKey: 'doctorId',
           allowNull: true,
         });
+
+        User.hasMany(models.article, {
+          foreignKey: 'authorUserId',
+        });
       },
     },
   });

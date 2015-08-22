@@ -93,7 +93,12 @@ export default (app, models) => {
    */
   app.get('/api/articles', (req, res) => {
     models.article
-      .findAll()
+      .findAll({
+        include: [{
+          model: models.user,
+          as: 'author',
+        }, ],
+      })
       .then((articles) => {
         res.json(articles || []);
       });
@@ -101,7 +106,15 @@ export default (app, models) => {
 
   app.get('/api/articles/:articleId(\\d+)', (req, res) => {
     models.article
-      .findById(req.params.articleId)
+      .findOne({
+        where: {
+          id: req.params.articleId,
+        },
+        include: [{
+          model: models.user,
+          as: 'author',
+        }, ],
+      })
       .then((article) => {
         res.json(article || {});
       });
