@@ -41,7 +41,7 @@ class BlogPage extends React.Component {
         <Link
           className="btn-new-article"
           to={`/smile/blog/new?${this.props.user.userParams}`}>
-          新增
+          <img src="/smile/article/new_post.png" />
         </Link>
       </div>
     </SmileLayout>;

@@ -61,10 +61,11 @@ db.user
     });
   });
 
-db.message
-  .sync({force: true})
-  .then(() => {
-  });
+// http://pgoh13.com/mycourse/lesson1nama.php
+// db.message
+//   .sync({force: true})
+//   .then(() => {
+//   });
 
 db.article
   .sync({force: true})

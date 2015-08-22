@@ -1,8 +1,17 @@
 @mainColor: #0B9CD1;
+@headerHeight: 50px;
 
 * {
   margin: 0px;
   padding: 0px;
+}
+
+.header {
+  background-color: @mainColor;
+  position: fixed;
+  top: 0px;
+  height: @headerHeight;
+  width: 100%;
 }
 
 .nav-tab {
@@ -42,7 +51,7 @@
 .chat-container,
 .information-container {
   position: absolute;
-  top: 30px;
+  top: @headerHeight;
   bottom: 50px;
   width: 100%;
   overflow-y: auto;
@@ -128,11 +137,91 @@
 
   .btn-new-article {
     display: block;
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     position: absolute;
     bottom: 30px;
     right: 30px;
-    background: red;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.chat-container {
+  @inputBoxHeight: 40px;
+
+  background-color: #eee;
+  overflow-y: hidden;
+
+  .message-list {
+    box-sizing: border-box;
+    padding: 20px;
+    list-style-type: none;
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    top: 0px;
+    bottom: @inputBoxHeight;
+
+    li {
+      display: block;
+      clear: both;
+      padding-top: 20px;
+
+      .pull-left {
+        float: left;
+      }
+
+      .pull-right {
+        float: right;
+      }
+
+      .speaker {
+        display: block;
+        padding: 10px 0;
+
+        &.pull-right {
+          display: none;
+        }
+      }
+
+      .text {
+        display: block;
+        padding: 10px;
+        border-radius: 10px;
+        margin: 0 10px;
+        max-width: 70%;
+        word-wrap: break-word;
+
+        &.pull-left {
+          background-color: @mainColor;
+          color: white;
+        }
+
+        &.pull-right {
+          background-color: white;
+          color: black;
+        }
+      }
+    }
+  }
+
+  .inputbox {
+    position: absolute;
+    border: none;
+    border-top: 1px solid #ccc;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    height: @inputBoxHeight;
+    line-height: @inputBoxHeight;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 20px;
   }
 }

@@ -16,7 +16,7 @@ export default class DefaultLayout extends React.Component {
     ];
 
     const styles = [
-      // 'http://localhost:8080/css/todo/bundle.css',
+      // 'http://localhost:8080/css/smile/bundle.css',
       // 'http://smile.ngrok.io/css/smile/bundle.css',
     ];
 

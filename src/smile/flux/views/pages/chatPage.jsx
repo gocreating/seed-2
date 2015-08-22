@@ -48,16 +48,29 @@ class ChatPage extends React.Component {
     }
   }
 
+  // componentWillUpdate() {
+  //   var node = this.getDOMNode();
+  //   this.shouldScrollBottom = node.scrollTop +
+  //     node.offsetHeight === node.scrollHeight;
+  // }
+
+  // componentDidUpdate() {
+  //   if (this.shouldScrollBottom) {
+  //     var node = this.getDOMNode();
+  //     node.scrollTop = node.scrollHeight;
+  //   }
+  // }
+
   render() {
     return <SmileLayout>
       <div className="chat-container">
-        <h1>醫師諮詢</h1>
         <ul className="message-list">
           {this.props.messages.map((msg, idx) => (
             <MessageItem key={idx} {...msg} />
           ))}
         </ul>
         <input
+          className="inputbox"
           type="text"
           value={this.props.userInput}
           onChange={this._onChange.bind(this)}
