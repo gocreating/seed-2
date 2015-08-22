@@ -33,5 +33,9 @@ export default (
         path=":informationId"
         handler={require('./flux/views/pages/informationDetailPage.jsx')} />
     </Route>
+
+    <Route
+      path="record"
+      handler={require('./flux/views/pages/recordPage.jsx')} />
   </Route>
 );

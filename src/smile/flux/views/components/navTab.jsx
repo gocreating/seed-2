@@ -3,10 +3,6 @@ import connectToStores from 'alt/utils/connectToStores';
 import {Link} from 'react-router';
 import UserStore from '../../stores/UserStore';
 
-// if (process.env.BROWSER) {
-//   require('../../../public/less/navTab.less');
-// }
-
 class NavTab extends React.Component {
   static getStores() {
     return [UserStore];
