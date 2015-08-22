@@ -4,22 +4,6 @@ import Slider from '../components/slider.jsx';
 import SmileLayout from '../layouts/smileLayout.jsx';
 
 export default class RecordPage extends React.Component{
-  // componentDidMount() {
-  //   $('#slider-blood-pressure').CircularSlider({
-  //     min: 50,
-  //     max: 200,
-  //     radius: 120,
-  //     labelSuffix: ' mg/dl',
-  //   });
-
-  //   $('#slider-blood-sugar').CircularSlider({
-  //     min: 0,
-  //     max: 300,
-  //     radius: 120,
-  //     labelSuffix: ' mg/dl',
-  //   });
-  // }
-
   render() {
     return <SmileLayout>
       <div className="record-container">

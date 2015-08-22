@@ -1,5 +1,6 @@
 @mainColor: #0B9CD1;
 @headerHeight: 50px;
+@navTabHeight: 50px;
 
 * {
   margin: 0px;
@@ -11,7 +12,15 @@
   position: fixed;
   top: 0px;
   height: @headerHeight;
+  line-height: @headerHeight;
   width: 100%;
+  vertical-align: middle;
+  text-align: center;
+
+  .logo {
+    display: inline-block;
+    height: 70%;
+  }
 }
 
 .nav-tab {
@@ -19,9 +28,10 @@
   position: fixed;
   bottom: 0px;
   width: 100%;
-  height: 50px;
+  height: @navTabHeight;
   border-top: 1px solid #ddd;
   margin-bottom: 0px; // override bootstrap
+  box-sizing: border-box;
 
   li {
     display: inline-block;
@@ -32,6 +42,9 @@
       display: block;
       width: 100%;
       height: 100%;
+      line-height: @navTabHeight;
+      vertical-align: middle;
+      text-align: center;
 
       &.active {
         background-color: @mainColor;
@@ -39,9 +52,8 @@
       }
 
       img {
-        display: block;
-        // width: 100%;
-        height: 100%;
+        display: inline-block;
+        height: 80%;
         margin: 0 auto;
       }
     }
@@ -54,12 +66,9 @@
 .record-container {
   position: absolute;
   top: @headerHeight;
-  bottom: 50px;
+  bottom: @navTabHeight;
   width: 100%;
   overflow-y: auto;
-}
-
-.message-list {
 }
 
 .blog-container {
@@ -70,13 +79,10 @@
   }
 
   &>.author {
-    // position: absolute;
-    // right: 40px;
-    // width: 100%;
     margin: 10px 20px;
-
     display: block;
     text-align: right;
+
     &:before {
       content: '- '
     }
@@ -187,13 +193,14 @@
 
   .message-list {
     box-sizing: border-box;
-    padding: 20px;
+    padding: 10px;
     list-style-type: none;
     overflow-y: auto;
     position: absolute;
     width: 100%;
     top: 0px;
     bottom: @inputBoxHeight;
+    margin-bottom: 0px !important;
 
     li {
       display: block;
@@ -307,6 +314,31 @@
 }
 
 .record-container {
+  // override bootstrap
+  &>div>nav>.nav-tabs {
+    border: 0px;
+
+    li, li:hover {
+      width: 50%;
+      text-align: center;
+      border: 0px;
+
+      a, a:hover {
+        color: #ccc;
+        font-size: 20px;
+        border-radius: 0px;
+        border: 0px;
+      }
+
+      &.active {
+        a, a:hover {
+          color: @mainColor;
+          border-bottom: 3px solid @mainColor;
+        }
+      }
+    }
+  }
+
   .slider {
     margin-top: 50px;
     text-align: center;
@@ -315,14 +347,25 @@
       background-color: white;
       color: #888;
       border: 0px;
+      font-size: 30px !important;
+      vertical-align: middle;
+      line-height: 192px;
     }
 
     .jcs {
-      border: 5px solid #ddd;
+      border: 10px solid #e5e5e5;
     }
 
     .jcs-indicator {
-      background-color: @mainColor;
+      box-sizing: border-box;
+      background-color: #79CDD2;
+      border: 0px;
+      // border: 3px solid #79CDD2;
+      // padding: 6px;
+      width: 30px !important;
+      height: 30px !important;
+      // top: -12px !important;
+      // left: 108px !important;
     }
   }
 }

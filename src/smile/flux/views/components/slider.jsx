@@ -6,6 +6,7 @@ export default class Slider extends React.Component{
       min: 50,
       max: 200,
       radius: 120,
+      innerCircleRatio: 0.8,
       labelSuffix: ' mg/dl',
     });
   }

@@ -14,7 +14,6 @@ export default (app) => {
   app.use(favicon(path.resolve(__dirname, '../public/favicon.ico')));
   app.use(express.static(path.resolve(__dirname, '../../public')));
   for (let appName in installedApps) {
-    console.log(path.resolve(__dirname, '../../', appName, 'public'));
     app.use(
       installedApps[appName].pathPrefix.toLowerCase(),
       express.static(path.resolve(__dirname, '../../', appName, 'public'))

@@ -12,15 +12,15 @@ export default class DefaultLayout extends React.Component {
     const scripts = [
       'https://code.jquery.com/jquery-2.1.4.min.js',
       '/smile/vendor/circular-slider.min.js',
-      // 'http://localhost:8080/js/smile/bundle.js',
-      'http://smile.ngrok.io/js/smile/bundle.js',
+      'http://localhost:8080/js/smile/bundle.js',
+      // 'http://smile.ngrok.io/js/smile/bundle.js',
     ];
 
     const styles = [
       'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css',
       '/smile/vendor/circular-slider.min.css',
       // 'http://localhost:8080/css/smile/bundle.css',
-      'http://smile.ngrok.io/css/smile/bundle.css',
+      // 'http://smile.ngrok.io/css/smile/bundle.css',
     ];
 
     return (
