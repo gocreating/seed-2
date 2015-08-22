@@ -21,6 +21,7 @@
   width: 100%;
   height: 50px;
   border-top: 1px solid #ddd;
+  margin-bottom: 0px; // override bootstrap
 
   li {
     display: inline-block;
@@ -49,7 +50,8 @@
 
 .blog-container,
 .chat-container,
-.information-container {
+.information-container,
+.record-container {
   position: absolute;
   top: @headerHeight;
   bottom: 50px;
@@ -300,6 +302,27 @@
           padding: 5px 0;
         }
       }
+    }
+  }
+}
+
+.record-container {
+  .slider {
+    margin-top: 50px;
+    text-align: center;
+
+    .jcs-value {
+      background-color: white;
+      color: #888;
+      border: 0px;
+    }
+
+    .jcs {
+      border: 5px solid #ddd;
+    }
+
+    .jcs-indicator {
+      background-color: @mainColor;
     }
   }
 }
