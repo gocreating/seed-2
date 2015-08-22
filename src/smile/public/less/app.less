@@ -27,6 +27,13 @@
         background-color: @mainColor;
         color: white;
       }
+
+      img {
+        display: block;
+        // width: 100%;
+        height: 100%;
+        margin: 0 auto;
+      }
     }
   }
 }
@@ -46,7 +53,7 @@
 
 .blog-container {
   .categories {
-    @height: 50px;
+    @height: 30px;
 
     display: block;
     width: 100%;
@@ -56,10 +63,9 @@
     li {
       box-sizing: border-box;
       display: inline-block;
-      width: 200px;
       height: 100%;
       border: 3px solid @mainColor;
-      margin: 0 20px;
+      margin: 0 5px;
       border-radius: @height/2;
 
       a {
@@ -67,24 +73,27 @@
         text-align: center;
         width: 100%;
         height: 100%;
-        vertical-align: 100%;
-        line-height: @height;
         text-decoration: none;
         color: @mainColor;
         border-radius: @height/2;
+        font-size: 14px;
+        padding: 5px;
+        box-sizing: border-box;
       }
 
-      &.active a {
-        background-color: @mainColor;
-        color: white;
+      &.active {
+        a {
+          background-color: @mainColor;
+          color: white;
+        }
       }
     }
   }
+
   .article-list {
     li {
       display: block;
       width: 100%;
-      height: 80px;
       border-bottom: 1px solid #ccc;
 
       &:first-child {

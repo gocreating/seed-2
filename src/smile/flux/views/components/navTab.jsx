@@ -3,9 +3,9 @@ import connectToStores from 'alt/utils/connectToStores';
 import {Link} from 'react-router';
 import UserStore from '../../stores/UserStore';
 
-if (process.env.BROWSER) {
-  require('../../../public/less/navTab.less');
-}
+// if (process.env.BROWSER) {
+//   require('../../../public/less/navTab.less');
+// }
 
 class NavTab extends React.Component {
   static getStores() {
@@ -19,19 +19,19 @@ class NavTab extends React.Component {
   render() {
     const userParams = this.props.userParams;
     const links = [{
-      title: 'Record',
+      title: 'record',
       to: `/smile/record?${userParams}`,
     }, {
-      title: 'Blog',
+      title: 'blog',
       to: `/smile/blog?${userParams}`,
     }, {
-      title: 'Chat',
+      title: 'chat',
       to: `/smile/chat?${userParams}`,
     }, {
-      title: 'Information',
+      title: 'information',
       to: `/smile/information?${userParams}`,
     }, {
-      title: 'Profile',
+      title: 'profile',
       to: `/smile/profile?${userParams}`,
     }, ];
 
@@ -39,7 +39,9 @@ class NavTab extends React.Component {
       <ul className="nav-tab">
         {links.map((link, idx) => {
           return <li key={idx}>
-            <Link to={link.to}>{link.title}</Link>
+            <Link to={link.to}>
+              <img src={`/smile/nav_icon/${link.title}.png`} />
+            </Link>
           </li>;
         })}
       </ul>
