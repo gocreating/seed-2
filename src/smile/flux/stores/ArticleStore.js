@@ -16,7 +16,6 @@ class ArticleStore {
 
   onDownloadByIdSuccess(article) {
     this.article = article;
-    console.log(article);
   }
 
   onUpdateNewTitle(title) {
