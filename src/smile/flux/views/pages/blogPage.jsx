@@ -26,9 +26,23 @@ class BlogPage extends React.Component {
   render() {
     return <SmileLayout>
       <div className="blog-container">
-        <h1>交流</h1>
+        <ul className="categories">
+          <li className="active">
+            <a href="#">FOOD</a>
+          </li>
+          <li>
+            <a href="#">TRANSPORT</a>
+          </li>
+          <li>
+            <a href="#">COMMUNICATE</a>
+          </li>
+        </ul>
         <ArticleListContainer articles={this.props.article.articles} />
-        <Link to={`/smile/blog/new?${this.props.user.userParams}`}>新增</Link>
+        <Link
+          className="btn-new-article"
+          to={`/smile/blog/new?${this.props.user.userParams}`}>
+          新增
+        </Link>
       </div>
     </SmileLayout>;
   }
