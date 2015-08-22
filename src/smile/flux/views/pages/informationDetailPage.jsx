@@ -20,8 +20,8 @@ module.exports = React.createClass({
   render: function() {
     return <SmileLayout>
       <div className="information-container">
-        <h1>{this.state.informationStore.article.title}</h1>
-        <p>{this.state.informationStore.article.content}</p>
+        <h1 className="title">{this.state.informationStore.article.title}</h1>
+        <p className="content">{this.state.informationStore.article.content}</p>
       </div>
     </SmileLayout>;
   },
