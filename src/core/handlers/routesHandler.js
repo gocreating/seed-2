@@ -76,22 +76,6 @@ export default (app) => {
     });
   }
 
-  // // general routing
-  // app.get('/',      reactRouterController);
-  // app.get('/about', reactRouterController);
-
-  // // exampple routing
-  // app.get('/todo',  reactRouterController);
-
-  // // user routing
-  // app.get ('/user/register',  reactRouterController);
-  // app.get ('/user/login',     reactRouterController);
-  // app.get ('/user/logout',    User.logout);
-  // app.get ('/user/profile',   userModule.middleware.requireLogin,
-  //                             reactRouterController);
-
-  // app.post('/api/user/login', User.api.login);
-
   // 404 page not found
   app.use((req, res, next) => {
     console.log('404');

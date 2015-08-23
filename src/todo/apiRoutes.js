@@ -1,9 +1,3 @@
 export default (app, models) => {
-  app.get('/api/todos', (req, res) => {
-    models.todo
-      .findAll()
-      .then(function(todos) {
-        res.json(todos);
-      });
-  });
+  app.rest('/api/todos', ':id(\\d+)', models.Todo, 'id');
 }
