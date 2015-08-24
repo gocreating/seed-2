@@ -1,4 +1,6 @@
-var path = require('path');
+import path from 'path';
+import colors from 'colors';
+import debug from 'debug';
 
 module.exports = {
   server: {
@@ -16,6 +18,9 @@ module.exports = {
       // the path is relative to 'build/debug/core'
       storage: path.resolve(__dirname, '../../../db.development.sqlite'),
       // logging: false,
+      logging: str => {
+        console.log(str.gray);
+      },
       pool: {
         max: 5,
         min: 0,

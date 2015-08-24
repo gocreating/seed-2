@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import Sequelize from 'sequelize';
 import settings from '../settings';
+import async from 'async';
 
 var sequelize = new Sequelize(
   null, // database
@@ -37,31 +38,127 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 /**
- * Insert dummy data
+ * Sync database and insert dummy data
  */
 
-db.User
-  .sync({force: true})
-  .then(() => {
-    db.User.bulkCreate([{
-      name: 'user a',
-      username: 'usera',
-    }, {
-      name: 'user b',
-      username: 'userb',
-    }, ]);
-  });
+async.series([
 
-db.Todo
-  .sync({force: true})
-  .then(() => {
-    db.Todo.bulkCreate([{
-      text: 'Dummy todo 01',
-    }, {
-      text: 'Wahahahaha',
-    }, {
-      text: 'Test!!',
-    }, ]);
-  });
+  /**
+   * Syncing
+   */
+
+  callback => {
+    db.Permission
+      .sync({force: true})
+      .then(() => {callback();});
+  },
+  callback => {
+    db.Group
+      .sync({force: true})
+      .then(() => {callback();});
+  },
+  callback => {
+    db.GroupPermission
+      .sync({force: true})
+      .then(() => {callback();});
+  },
+  callback => {
+    db.User
+      .sync({force: true})
+      .then(() => {callback();});
+  },
+  callback => {
+    db.Todo
+      .sync({force: true})
+      .then(() => {callback();});
+  },
+
+  /**
+   * Insert data
+   */
+
+  callback => {
+    db.Permission
+      .bulkCreate([
+        {name: 'CREATE_USER'},
+        {name: 'DELETE_USER'},
+        {name: 'LOGIN'},
+        {name: 'POST_ARTICLE'},
+      ])
+      .then(() => {callback();});
+  },
+  callback => {
+    db.Group
+      .bulkCreate([
+        {name: 'root'},
+        {name: 'admin'},
+        {name: 'user'},
+      ])
+      .then(() => {callback();});
+  },
+  callback => {
+    db.User
+      .bulkCreate([{
+        name: 'user a',
+        username: 'usera',
+      }, {
+        name: 'user b',
+        username: 'userb',
+      }, ])
+      .then(() => {callback();});
+  },
+  callback => {
+    db.Todo
+      .bulkCreate([
+        {text: 'Dummy todo 01'},
+        {text: 'Wahahahaha'},
+        {text: 'Test!!'},
+      ])
+      .then(() => {callback();});
+  },
+
+  /**
+   * Insert relation data
+   */
+  callback => {
+    db.Group
+      .findOne({
+        where: {
+          name: 'user',
+        },
+      })
+      .then((group) => {
+        db.User
+          .findOne({
+            where: {
+              username: 'usera',
+            },
+          })
+          .then((user) => {
+            // console.log(user);
+            user
+              .setGroup(group)
+              .then(() => {callback();});
+          });
+      });
+  },
+  callback => {
+    db.Permission
+      .findAll()
+      .then((perms) => {
+        db.Group
+          .findOne({
+            where: {
+              name: 'root',
+            },
+          })
+          .then((rootGroup) => {
+            rootGroup
+              .setPermissions(perms)
+              .then(() => {callback();});
+          });
+      });
+  },
+]);
 
 export default db;

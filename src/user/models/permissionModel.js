@@ -1,19 +1,18 @@
 export default (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+  const Permission = sequelize.define('Permission', {
     name: DataTypes.STRING,
-    username: DataTypes.STRING,
-    password: DataTypes.STRING,
   }, {
     // Model tableName will be the same as the model name
     freezeTableName: true,
+    timestamps: false,
     classMethods: {
       associate: function(models) {
-        User.belongsTo(models.Group, {
-          as: 'group',
+        Permission.belongsToMany(models.Group, {
+          through: models.GroupPermission,
         });
       },
     },
   });
 
-  return User;
+  return Permission;
 };
