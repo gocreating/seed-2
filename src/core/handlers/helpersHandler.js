@@ -3,11 +3,12 @@ export default (app) => {
    * Register `rest` function
    *
    * @param {string} path
-   * @param {string} modelAttribute
+   * @param {string} pathIdentifier
    * @param {object} model
+   * @param {object} modelAttribute
    *
    * Usage:
-   *   app.rest('/api/users', 'id', models.User);
+   *   app.rest('/api/users', ':id(\\d+)', models.User, 'id');
    */
   app.rest = (path, pathIdentifier, model, modelAttribute) => {
     // index
