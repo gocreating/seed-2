@@ -31,6 +31,7 @@ var webpackconfig = {
     filename: 'js/[name]/bundle.js',
     publicPath: 'http://localhost:8080/',
   },
+  // doc: http://webpack.github.io/docs/configuration.html#devtool
   devtool: '#inline-source-map',
   externals: {
     // require("jquery") is external and available
@@ -48,20 +49,21 @@ var webpackconfig = {
       // REACT
       {
         test: /\.jsx?$/,
-        loaders: ['react-hot', 'babel'],
+        loaders: [
+          'react-hot',
+          'babel-loader?stage=0',
+        ],
         exclude: /node_modules/,
       },
       // LESS
       {
         test: /\.less$/,
         loader: 'style!css!less',
-        // include: path.join(__dirname, '../src/core/public'),
       },
       // CSS
       {
         test: /\.css$/,
         loader: 'style!css',
-        // include: path.join(__dirname, '../build/debug/public'),
       },
     ],
   },

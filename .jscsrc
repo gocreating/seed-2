@@ -1,7 +1,6 @@
 {
   "preset": "node-style-guide",
   "esnext": true,
-  "esprima": "esprima-fb",
   "fileExtensions": [".js", ".jsx"],
   "excludeFiles": [
     "node_modules/**",
@@ -13,5 +12,6 @@
     "allExcept": ["comments", "urlComments", "require"]
   },
   "requireCapitalizedComments": null,
-  "requireSemicolons": true
+  "requireSemicolons": true,
+  "validateQuoteMarks": null
 }

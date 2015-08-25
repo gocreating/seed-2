@@ -6,6 +6,7 @@ var TodoItem = require('../components/todoItem.jsx');
 
 const ENTER_KEY_CODE = 13;
 
+@connectToStores
 class Todo extends React.Component {
   static getStores() {
     return [TodoStore];
@@ -48,4 +49,4 @@ class Todo extends React.Component {
   }
 };
 
-export default connectToStores(Todo);
+export default Todo;

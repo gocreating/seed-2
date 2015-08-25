@@ -1,3 +1,5 @@
+require('source-map-support').install();
+
 import express            from 'express';
 import environmentHandler from './core/handlers/environmentHandler';
 // import databaseHandler    from './core/handlers/databaseHandler';
