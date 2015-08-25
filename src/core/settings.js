@@ -17,6 +17,8 @@ module.exports = {
       storage: path.resolve(__dirname, '../../../db.development.sqlite'),
       // logging: false,
       logging: str => {
+        // color codes from:
+        //   http://bluesock.org/~willkg/dev/ansi.html
         console.log(
           '\x1b[1;36m' + '[SQL] ' +
           '\x1b[1;30m' + str.replace('Executing (default): ', '') +

@@ -48,6 +48,10 @@ async.series([
    */
 
   callback => {
+    settings.db.development.logging('\x1b[0m=== Syncing ===');
+    callback();
+  },
+  callback => {
     db.Permission
       .sync({force: true})
       .then(() => {callback();});
@@ -77,6 +81,10 @@ async.series([
    * Insert data
    */
 
+  callback => {
+    settings.db.development.logging('\x1b[0m=== Insert Data ===');
+    callback();
+  },
   callback => {
     db.Permission
       .bulkCreate([
@@ -121,6 +129,10 @@ async.series([
    * Insert relation data
    */
   callback => {
+    settings.db.development.logging('\x1b[0m=== Insert Relation Data ===');
+    callback();
+  },
+  callback => {
     db.Group
       .findOne({
         where: {
@@ -135,7 +147,6 @@ async.series([
             },
           })
           .then((user) => {
-            // console.log(user);
             user
               .setGroup(group)
               .then(() => {callback();});
@@ -147,15 +158,15 @@ async.series([
       .findAll()
       .then((perms) => {
         db.Group
-          .findOne({
-            where: {
-              name: 'root',
-            },
-          })
-          .then((rootGroup) => {
-            rootGroup
-              .setPermissions(perms)
-              .then(() => {callback();});
+          .findAll()
+          .then((groups) => {
+            async.eachSeries(groups, (group, cb) => {
+              group
+                .setPermissions(perms)
+                .then(() => {cb();});
+            }, () => {
+              callback();
+            });
           });
       });
   },
