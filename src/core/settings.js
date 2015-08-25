@@ -1,6 +1,4 @@
 import path from 'path';
-import colors from 'colors';
-import debug from 'debug';
 
 module.exports = {
   server: {
@@ -19,7 +17,11 @@ module.exports = {
       storage: path.resolve(__dirname, '../../../db.development.sqlite'),
       // logging: false,
       logging: str => {
-        console.log(str.gray);
+        console.log(
+          '\x1b[1;36m' + '[SQL] ' +
+          '\x1b[1;30m' + str.replace('Executing (default): ', '') +
+          '\x1b[0m'
+        );
       },
       pool: {
         max: 5,
