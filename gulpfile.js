@@ -24,6 +24,7 @@ var del           = require('del');
 // var preprocessify = require('preprocessify');
 // var preprocess    = require('gulp-preprocess');
 var babel         = require('gulp-babel');
+var sourcemaps    = require('gulp-sourcemaps');
 // var gutil         = require('gulp-util');
 var runSequence   = require('run-sequence');
 var webpack       = require('gulp-webpack');
@@ -224,17 +225,19 @@ gulp.task('backend-scripts', function() {
       '!src/*/public/**/*.js',
       '!src/*/flux/**/*.js',
     ])
+    .pipe(sourcemaps.init())
     .pipe(gulpif(isDev, changed('build/debug')))
-    // .pipe(preprocess({
-    //   context: {
-    //     ENV: env,
-    //     DEV: isDev,
-    //     TEST: isTest,
-    //     PROD: isProd,
-    //   },
-    // }))
-    .pipe(babel())
-    // .pipe(gulpif(argv.u, uglify()))
+      // .pipe(preprocess({
+      //   context: {
+      //     ENV: env,
+      //     DEV: isDev,
+      //     TEST: isTest,
+      //     PROD: isProd,
+      //   },
+      // }))
+      .pipe(babel())
+      // .pipe(gulpif(argv.u, uglify()))
+    .pipe(sourcemaps.write())
     .pipe(gulpif(isDev, gulp.dest('build/debug')))
     .pipe(gulpif(isTest, gulp.dest('build/test')))
     .pipe(gulpif(isProd, gulp.dest('build/release')));
@@ -243,11 +246,13 @@ gulp.task('backend-scripts', function() {
 gulp.task('backend-views', function() {
   return gulp
     .src('./src/**/*.jsx')
-    .pipe(gulpif(isDev, changed('./build/debug')))
-    .pipe(babel())
-    .pipe(rename({
-      extname: '.jsx',
-    }))
+    .pipe(sourcemaps.init())
+      .pipe(gulpif(isDev, changed('./build/debug')))
+      .pipe(babel())
+      .pipe(rename({
+        extname: '.jsx',
+      }))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest('./build/debug'));
 });
 

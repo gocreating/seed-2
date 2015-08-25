@@ -31,6 +31,7 @@ var webpackconfig = {
     filename: 'js/[name]/bundle.js',
     publicPath: 'http://localhost:8080/',
   },
+  devtool: '#inline-source-map',
   externals: {
     // require("jquery") is external and available
     // on the global var $
