@@ -4,31 +4,51 @@ import Sequelize from 'sequelize';
 import settings from '../settings';
 import async from 'async';
 
-var sequelize = new Sequelize(
+// @ifdef DEV
+const sequelize = new Sequelize(
   null, // database
   null, // username
   null, // password
   settings.db.development
 );
+// @endif
 
-var db = {};
+// @ifdef TEST
+const sequelize = new Sequelize(
+  null, // database
+  null, // username
+  null, // password
+  settings.db.test
+);
+// @endif
+
+// @ifdef PROD
+const sequelize = new Sequelize(
+  null, // database
+  null, // username
+  null, // password
+  settings.db.production
+);
+// @endif
+
+let db = {};
 
 for (let appName in settings.installedApps) {
-  var modelDir = path.resolve(__dirname, '../../', appName, 'models');
+  const modelDir = path.resolve(__dirname, '../../', appName, 'models');
   if (fs.existsSync(modelDir)) {
     fs
       .readdirSync(modelDir)
-      .filter(function(file) {
+      .filter((file) => {
         return (file.indexOf('.') !== 0) && (file !== 'index.js');
       })
-      .forEach(function(file) {
+      .forEach((file) => {
         var model = sequelize.import(path.resolve(modelDir, file));
         db[model.name] = model;
       });
   }
 }
 
-Object.keys(db).forEach(function(modelName) {
+Object.keys(db).forEach((modelName) => {
   if ('associate' in db[modelName]) {
     db[modelName].associate(db);
   }

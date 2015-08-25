@@ -31,8 +31,28 @@ module.exports = {
         idle: 10000,
       },
     },
-    test: 'sqlite://db.test.sqlite',
-    production: 'sqlite://db.production.sqlite',
+    test: {
+      dialect: 'sqlite',
+      // the path is relative to 'build/debug/core'
+      storage: path.resolve(__dirname, '../../../db.test.sqlite'),
+      logging: false,
+      pool: {
+        max: 5,
+        min: 0,
+        idle: 10000,
+      },
+    },
+    production: {
+      dialect: 'sqlite',
+      // the path is relative to 'build/debug/core'
+      storage: path.resolve(__dirname, '../../../db.production.sqlite'),
+      logging: false,
+      pool: {
+        max: 5,
+        min: 0,
+        idle: 10000,
+      },
+    },
   },
   user: {
     bearerToken: {

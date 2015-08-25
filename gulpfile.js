@@ -8,15 +8,15 @@ require('babel/register');
  */
 var gulp          = require('gulp');
 var less          = require('gulp-less');
-// var autoprefixer  = require('gulp-autoprefixer');
-// var minifycss     = require('gulp-minify-css');
-// var uglify        = require('gulp-uglify');
+var autoprefixer  = require('gulp-autoprefixer');
+var minifycss     = require('gulp-minify-css');
+var uglify        = require('gulp-uglify');
 var rename        = require('gulp-rename');
 var concat        = require('gulp-concat');
 var gulpif        = require('gulp-if');
 var changed       = require('gulp-changed');
 var del           = require('del');
-// var notify        = require('gulp-notify');
+var notify        = require('gulp-notify');
 // var source        = require('vinyl-source-stream');
 // var buffer        = require('vinyl-buffer');
 // var babelify      = require('babelify');
@@ -122,15 +122,6 @@ gulp.task('clean', function(cb) {
   }
 });
 
-gulp.task('webpack', function(cb) {
-  var webpackconfig = require('./gulp/webpack.development.js');
-
-  return gulp
-    .src('')
-    .pipe(webpack(webpackconfig))
-    .pipe(gulp.dest('./build/debug/public'));
-});
-
 /**
  * compile .less files
  */
@@ -142,76 +133,50 @@ function getFolders(dir) {
       return fs.statSync(path.join(dir, file)).isDirectory();
     });
 }
+
 gulp.task('styles', function() {
   var folders = getFolders('./src');
   var tasks = folders.map(function(folder) {
-    var destFolder = path.join('./build/debug/public/css/', folder);
+    var destFolder;
+    if (isDev) {
+      destFolder = path.join('./build/debug/public/css/', folder);
+    } else if (isTest) {
+      destFolder = path.join('./build/test/public/css/', folder);
+    } else if (isProd) {
+      destFolder = path.join('./build/release/public/css/', folder);
+    }
+
     return gulp
       .src(path.join('./src', folder, '/public/less/**/*.less'))
       .pipe(gulpif(isDev, changed(destFolder)))
       .pipe(less())
+      .on('error', handleErrors)
+      .pipe(autoprefixer(
+        'last 2 version',
+        'safari 5',
+        'ie 8',
+        'ie 9',
+        'opera 12.1',
+        'ios 6',
+        'android 4'
+      ))
+      .pipe(gulpif(isTest || isProd, minifycss()))
       .pipe(concat('bundle.css'))
       .pipe(gulp.dest(destFolder));
   });
   return tasks;
-  // return gulp
-  //   .src(['src/*/public/less/**/*.less'])
-  //   .pipe(gulpif(isDev, changed('build/debug/assets/css')))
-  //   .pipe(less())
-  //   .on('error', handleErrors)
-  //   .pipe(autoprefixer(
-  //     'last 2 version',
-  //     'safari 5',
-  //     'ie 8',
-  //     'ie 9',
-  //     'opera 12.1',
-  //     'ios 6',
-  //     'android 4'
-  //   ))
-  //   .pipe(gulpif(isDev, gulp.dest('build/debug/assets/css')))
-  //   .pipe(gulpif(isProd || isTest, minifycss()))
-  //   .pipe(gulpif(isTest, gulp.dest('build/test/assets/css')))
-  //   .pipe(gulpif(isProd, gulp.dest('build/release/assets/css')));
 });
 
-/**
- * compile front-end .js files
- */
-// gulp.task('frontend-scripts', function() {
-//   return gulp
-//     .src('src/assets/js/**/*.js')
-//     .pipe(gulpif(isDev, changed('build/debug/assets/js')))
-//     .pipe(preprocess({
-//       context: {
-//         ENV: env,
-//         DEV: isDev,
-//         TEST: isTest,
-//         PROD: isProd,
-//       },
-//     }))
-//     .pipe(babel())
-//     .pipe(gulpif(isProd || isTest, uglify()))
-//     .pipe(gulpif(isDev, gulp.dest('build/debug/assets/js')))
-//     .pipe(gulpif(isTest, gulp.dest('build/test/assets/js')))
-//     .pipe(gulpif(isProd, gulp.dest('build/release/assets/js')));
-// });
+gulp.task('webpack', function(cb) {
+  var webpackconfig = require('./gulp/webpack.' + env + '.js');
 
-/**
- * compressing images
- * TO-DO
- */
-gulp.task('images', function() {
   return gulp
-    .src('src/assets/img/**/*')
-    .pipe(gulpif(isDev, changed('build/debug/assets/img')))
-    // .pipe(cache(imagemin({
-    //   optimizationLevel: 3,
-    //   progressive: true,
-    //   interlaced: true,
-    // })))
-    .pipe(gulpif(isDev, gulp.dest('build/debug/assets/img')))
-    .pipe(gulpif(isTest, gulp.dest('build/test/assets/img')))
-    .pipe(gulpif(isProd, gulp.dest('build/release/assets/img')));
+    .src('')
+    .pipe(webpack(webpackconfig))
+    .pipe(gulpif(isTest || isProd, uglify()))
+    .pipe(gulpif(isDev, gulp.dest('./build/debug/public')))
+    .pipe(gulpif(isTest, gulp.dest('./build/test/public')))
+    .pipe(gulpif(isProd, gulp.dest('./build/release/public')));
 });
 
 /**
@@ -226,7 +191,7 @@ gulp.task('backend-scripts', function() {
       '!src/*/flux/**/*.js',
     ])
     .pipe(gulpif(isDev, changed('build/debug')))
-    .pipe(sourcemaps.init())
+    .pipe(gulpif(isDev, sourcemaps.init()))
       .pipe(preprocess({
         type: 'js',
         context: {
@@ -239,13 +204,13 @@ gulp.task('backend-scripts', function() {
       .pipe(babel({
         stage: 0, // to support es7
       }))
-      // .pipe(gulpif(argv.u, uglify()))
-    .pipe(sourcemaps.write({
+      .pipe(gulpif(isTest || isProd, uglify()))
+    .pipe(gulpif(isDev, sourcemaps.write({
       includeContent: false,
       sourceRoot: function(file) {
         return path.resolve(__dirname, 'src');
       },
-    }))
+    })))
     .pipe(gulpif(isDev, gulp.dest('build/debug')))
     .pipe(gulpif(isTest, gulp.dest('build/test')))
     .pipe(gulpif(isProd, gulp.dest('build/release')));
@@ -255,20 +220,23 @@ gulp.task('backend-views', function() {
   return gulp
     .src('./src/**/*.jsx')
     .pipe(gulpif(isDev, changed('./build/debug')))
-    .pipe(sourcemaps.init())
+    .pipe(gulpif(isDev, sourcemaps.init()))
       .pipe(babel({
         stage: 0, // to support es7
       }))
-    .pipe(sourcemaps.write({
+      .pipe(gulpif(isTest || isProd, uglify()))
+    .pipe(gulpif(isDev, sourcemaps.write({
       includeContent: false,
       sourceRoot: function(file) {
         return path.resolve(__dirname, 'src');
       },
-    }))
+    })))
     .pipe(rename({
       extname: '.jsx',
     }))
-    .pipe(gulp.dest('./build/debug'));
+    .pipe(gulpif(isDev, gulp.dest('./build/debug')))
+    .pipe(gulpif(isTest, gulp.dest('./build/test')))
+    .pipe(gulpif(isProd, gulp.dest('./build/release')));
 });
 
 gulp.task('copy', function() {

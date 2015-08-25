@@ -7,11 +7,13 @@ import Navbar from '../../../../core/flux/views/components/navbar.jsx';
 export default class DefaultLayout extends React.Component {
   render() {
     const scripts = [
-      'http://localhost:8080/js/user/bundle.js',
+      // 'http://localhost:8080/js/user/bundle.js',
+      '/js/user/bundle.js',
     ];
 
     const styles = [
-      'http://localhost:8080/css/user/bundle.css',
+      // 'http://localhost:8080/css/user/bundle.css',
+      '/css/user/bundle.css',
     ];
 
     return (
