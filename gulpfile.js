@@ -22,7 +22,7 @@ var del           = require('del');
 // var babelify      = require('babelify');
 // var globify       = require('require-globify');
 // var preprocessify = require('preprocessify');
-// var preprocess    = require('gulp-preprocess');
+var preprocess    = require('gulp-preprocess');
 var babel         = require('gulp-babel');
 var sourcemaps    = require('gulp-sourcemaps');
 // var gutil         = require('gulp-util');
@@ -227,14 +227,15 @@ gulp.task('backend-scripts', function() {
     ])
     .pipe(gulpif(isDev, changed('build/debug')))
     .pipe(sourcemaps.init())
-      // .pipe(preprocess({
-      //   context: {
-      //     ENV: env,
-      //     DEV: isDev,
-      //     TEST: isTest,
-      //     PROD: isProd,
-      //   },
-      // }))
+      .pipe(preprocess({
+        type: 'js',
+        context: {
+          ENV: env,
+          DEV: isDev,
+          TEST: isTest,
+          PROD: isProd,
+        },
+      }))
       .pipe(babel({
         stage: 0, // to support es7
       }))
@@ -363,7 +364,7 @@ gulp.task('webpack-dev-server', function(cb) {
       noInfo: false,
       historyApiFallback: true,
       proxy: {
-        '*': 'http://localhost:3000',
+        '*': 'http://localhost:' + settings.server.port[env],
       },
       stats: {colors: true},
     };

@@ -15,6 +15,7 @@ A flexible and scalable suite for building modern websites.
 - React Router
 - Hot reload react files
 - Cross Platforms
+- Support ES6/ES7 syntax
 
 ## Prerequisites
 

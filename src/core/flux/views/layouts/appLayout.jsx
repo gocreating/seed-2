@@ -22,11 +22,13 @@ export default class DefaultLayout extends React.Component {
     const scripts = [
       // 'https://code.jquery.com/jquery-2.1.4.min.js',
       // 'http://localhost:7000/browser-sync/browser-sync-client.2.8.2.js',
-      'http://localhost:8080/js/core/bundle.js',
+      // 'http://localhost:8080/js/core/bundle.js',
+      '/js/core/bundle.js',
     ];
 
     const styles = [
-      'http://localhost:8080/css/core/bundle.css',
+      // 'http://localhost:8080/css/core/bundle.css',
+      '/css/core/bundle.css',
     ];
 
     return (
