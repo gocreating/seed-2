@@ -10,9 +10,27 @@ export default class Navbar extends React.Component {
       padding: '15',
     };
 
+    const links = [{
+      title: 'Home',
+      to: `${installedApps.core && installedApps.core.pathPrefix}`,
+    }, {
+      title: 'About',
+      to: `${installedApps.core && installedApps.core.pathPrefix}/about`
+          .replace('//', '/'),
+    }, {
+      title: 'User',
+      to: `${installedApps.user && installedApps.user.pathPrefix}`,
+    }, {
+      title: 'Profile',
+      to: `${installedApps.user && installedApps.user.pathPrefix}/profile`,
+    }, {
+      title: 'Todo',
+      to: `${installedApps.todo && installedApps.todo.pathPrefix}`,
+    }, ];
+
     return <nav>
       <ul>
-        {this.props.links.map((link, idx) => {
+        {links.map((link, idx) => {
           // return <li key={idx} style={styles}>
           //   <Link to={link.to}>{link.title}</Link>
           //   <a href={link.to}>{link.title}</a>
@@ -26,25 +44,22 @@ export default class Navbar extends React.Component {
   }
 };
 
-Navbar.defaultProps = {
-  links: [{
-    title: 'Home',
-    to: `${installedApps.core && installedApps.core.pathPrefix}`,
-  }, {
-    title: 'About',
-    to: `${installedApps.core && installedApps.core.pathPrefix}/about`
-        .replace('//', '/'),
-  }, {
-    title: 'User',
-    to: `${installedApps.user && installedApps.user.pathPrefix}`,
-  }, {
-    title: 'Profile',
-    to: `${installedApps.user && installedApps.user.pathPrefix}/profile`,
-  }, {
-    title: 'Todo',
-    to: `${installedApps.todo && installedApps.todo.pathPrefix}`,
-  }, {
-    title: 'Smile',
-    to: `${installedApps.smile && installedApps.smile.pathPrefix}`,
-  }, ],
-};
+// Navbar.defaultProps = {
+//   links: [{
+//     title: 'Home',
+//     to: `${installedApps.core && installedApps.core.pathPrefix}`,
+//   }, {
+//     title: 'About',
+//     to: `${installedApps.core && installedApps.core.pathPrefix}/about`
+//         .replace('//', '/'),
+//   }, {
+//     title: 'User',
+//     to: `${installedApps.user && installedApps.user.pathPrefix}`,
+//   }, {
+//     title: 'Profile',
+//     to: `${installedApps.user && installedApps.user.pathPrefix}/profile`,
+//   }, {
+//     title: 'Todo',
+//     to: `${installedApps.todo && installedApps.todo.pathPrefix}`,
+//   }, ],
+// };
