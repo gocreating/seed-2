@@ -17,15 +17,9 @@ var gulpif        = require('gulp-if');
 var changed       = require('gulp-changed');
 var del           = require('del');
 var notify        = require('gulp-notify');
-// var source        = require('vinyl-source-stream');
-// var buffer        = require('vinyl-buffer');
-// var babelify      = require('babelify');
-// var globify       = require('require-globify');
-// var preprocessify = require('preprocessify');
 var preprocess    = require('gulp-preprocess');
 var babel         = require('gulp-babel');
 var sourcemaps    = require('gulp-sourcemaps');
-// var gutil         = require('gulp-util');
 var runSequence   = require('run-sequence');
 var webpack       = require('gulp-webpack');
 var path          = require('path');
@@ -38,12 +32,6 @@ var browserSync   = require('browser-sync');
  */
 var argv = require('yargs')
   .usage('Usage: gulp <command> [options] [-u]')
-  .command(
-    'init',
-    'Initialize database.\n' +
-    'Create tables from schemas, and insert built-in records ' +
-    'like root user, default permissions, etc.'
-  )
   .command(
     'build',
     'Prepare an environment for development, test or production.'
@@ -204,7 +192,7 @@ gulp.task('backend-scripts', function() {
       .pipe(babel({
         stage: 0, // to support es7
       }))
-      .pipe(gulpif(isTest || isProd, uglify()))
+      .pipe(gulpif(argv.u, uglify()))
     .pipe(gulpif(isDev, sourcemaps.write({
       includeContent: false,
       sourceRoot: function(file) {
