@@ -1,63 +1,53 @@
+import fs from 'fs';
+import path from 'path';
+import {installedApps} from '../settings';
+
 export default (app) => {
-  app.use((err, req, res, next) => {
-    switch (err.constructor.name) {
-      case 'Database': {
-        console.log('Database Error');
-        break;
-      }
-      case 'PageNotFound': {
-        res.status(err.status);
-        res.send('404');
-        return next();
-      }
-      case 'Unauthorize': {
-        res.status(err.status);
-        res.render('error/unauthorize', {
-          detail: err.detail,
-        });
-        return next();
-      }
-      case 'TokenInvalid': {
-        require('../modules/userModule').logout(req, res);
-      }
-      case 'FormValueInvalid': {
-        res.status(err.status);
-        res.json({
-          errors: [
-            {
-              title: err.title || '',
-              detail: err.detail || '',
-            },
-          ],
-          validationErrors: err.validationErrors,
-        });
-        return next();
-      }
-      default: {
-        console.log('Unknown Error:', err.name);
-        console.log(err.stack);
-      }
+  for (let appName in installedApps) {
+    const appDir = path.resolve(__dirname, '../../', appName);
+    const errHandlerPath = path.resolve(appDir, 'errors/handler.js');
+    if (fs.existsSync(errHandlerPath)) {
+      var errHandler = require(errHandlerPath);
+      errHandler(app);
     }
+  }
 
-    res.status(err.status || 500);
+  app.use((err, req, res, next) => {
+    console.log('second handler');
+    if (err) {
+      switch (err.constructor.name) {
+        case 'Database': {
+          console.log('Database Error');
+          break;
+        }
+        default: {
+          console.log('Unhandled Error:', err.name);
+          console.log(err.stack);
 
-    // send the error
-    if (req.xhr || req.get('content-type') == 'application/json') {
-      res.json({
-        errors: [
-          {
-            title: err.title || '',
-            detail: err.detail || '',
-          },
-        ],
-      });
+          res.status(err.status || 500);
 
-    // default error reporting page
-    } else {
-      res.render('error/report', {
-        message: err.title,
-        stack: err.stack,
-      });
+          // send the error
+          // if (req.xhr || req.get('content-type') == 'application/json') {
+          res.json({
+            errors: [
+              {
+                title: err.title || '',
+                detail: err.detail || '',
+                stack: err.stack.split('\n'),
+              },
+            ],
+          });
+
+          // default error reporting page
+          // } else {
+          //   res.render('error/report', {
+          //     message: err.title,
+          //     stack: err.stack,
+          //   });
+          // }
+        }
+      }
+
     }
   });
 };

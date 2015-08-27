@@ -5,7 +5,7 @@ import environmentHandler from './core/handlers/environmentHandler';
 // import databaseHandler    from './core/handlers/databaseHandler';
 import helpersHandler      from './core/handlers/helpersHandler';
 import routesHandler      from './core/handlers/routesHandler';
-// import errorHandler       from './core/handlers/errorHandler';
+import errorHandler       from './core/handlers/errorHandler';
 import serverHandler      from './core/handlers/serverHandler';
 
 const app = express();
@@ -23,7 +23,7 @@ helpersHandler(app);
 routesHandler(app);
 
 // error handling
-// errorHandler(app);
+errorHandler(app);
 
 // launch the server
 serverHandler(app);

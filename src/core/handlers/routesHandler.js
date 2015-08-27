@@ -1,4 +1,3 @@
-// import errors from '../errors/';
 import React from 'react';
 import Router from 'react-router';
 import Helmet from 'react-helmet';
@@ -8,6 +7,7 @@ import path from 'path';
 import routes from '../routes';
 import {installedApps} from '../settings';
 import models from '../models';
+import errors from '../errors';
 
 export default (app) => {
   const isSSR = true;
@@ -78,8 +78,6 @@ export default (app) => {
 
   // 404 page not found
   app.use((req, res, next) => {
-    console.log('404');
-    res.send('404');
-    // next(new errors.pageNotFound());
+    next(new errors.PageNotFound());
   });
 };
