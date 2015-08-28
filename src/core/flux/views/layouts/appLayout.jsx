@@ -1,5 +1,4 @@
 import React from 'react';
-import {RouteHandler} from 'react-router';
 
 import BaseLayout from './baseLayout.jsx';
 import Navbar from '../components/navbar.jsx';
@@ -20,14 +19,12 @@ if (process.env.BROWSER) {
 export default class DefaultLayout extends React.Component {
   render() {
     const scripts = [
-      // 'https://code.jquery.com/jquery-2.1.4.min.js',
       // 'http://localhost:7000/browser-sync/browser-sync-client.2.8.2.js',
-      // 'http://localhost:8080/js/core/bundle.js',
+      // 'https://code.jquery.com/jquery-2.1.4.min.js',
       '/js/core/bundle.js',
     ];
 
     const styles = [
-      // 'http://localhost:8080/css/core/bundle.css',
       '/css/core/bundle.css',
     ];
 
@@ -37,7 +34,7 @@ export default class DefaultLayout extends React.Component {
         scripts={scripts}
         styles={styles} >
         <Navbar />
-        <RouteHandler {...this.props} />
+        {this.props.children}
       </BaseLayout>
     );
   }

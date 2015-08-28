@@ -1,9 +1,11 @@
 import React from 'react';
 
-export default class About extends React.Component {
+import AppLayout from '../layouts/appLayout.jsx';
+
+export default class AboutPage extends React.Component {
   render() {
-    return <div>
+    return <AppLayout>
       <h1>About</h1>
-    </div>;
+    </AppLayout>;
   }
 };

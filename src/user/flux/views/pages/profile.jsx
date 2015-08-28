@@ -1,9 +1,11 @@
 import React from 'react';
 
-export default class Profile extends React.Component {
+import AppLayout from '../layouts/appLayout.jsx';
+
+export default class ProfilePage extends React.Component {
   render() {
-    return <div>
+    return <AppLayout>
       <h1>Profile</h1>
-    </div>;
+    </AppLayout>;
   }
 };

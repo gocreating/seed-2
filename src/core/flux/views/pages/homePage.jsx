@@ -1,14 +1,16 @@
 import React from 'react';
 
-export default class Home extends React.Component {
+import AppLayout from '../layouts/appLayout.jsx';
+
+export default class HomePage extends React.Component {
   handleClick() {
     alert('It works');
   }
 
   render() {
-    return <div>
+    return <AppLayout>
       <h1>Home</h1>
       <button onClick={this.handleClick}>Click me</button>
-    </div>;
+    </AppLayout>;
   }
 };

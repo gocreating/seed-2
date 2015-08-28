@@ -72,7 +72,7 @@ module.exports = {
   },
   installedApps: {
     core: {
-      pathPrefix: '/',
+      pathPrefix: '',
     },
     user: {
       pathPrefix: '/user',

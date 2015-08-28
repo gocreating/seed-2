@@ -12,7 +12,7 @@ A flexible and scalable suite for building modern websites.
 - Sequalize
 - Gulp
 - Webpack
-- React Router
+- React Router Component
 - Hot reload react files
 - Cross Platforms
 - Support ES6/ES7 syntax

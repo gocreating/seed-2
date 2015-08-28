@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link} from 'react-router-component';
 
 var installedApps = require('../../../settings').installedApps;
 
@@ -12,11 +12,10 @@ export default class Navbar extends React.Component {
 
     const links = [{
       title: 'Home',
-      to: `${installedApps.core && installedApps.core.pathPrefix}`,
+      to: `${installedApps.core && installedApps.core.pathPrefix}/`,
     }, {
       title: 'About',
-      to: `${installedApps.core && installedApps.core.pathPrefix}/about`
-          .replace('//', '/'),
+      to: `${installedApps.core && installedApps.core.pathPrefix}/about`,
     }, {
       title: 'User',
       to: `${installedApps.user && installedApps.user.pathPrefix}`,
@@ -32,8 +31,7 @@ export default class Navbar extends React.Component {
       <ul>
         {links.map((link, idx) => {
           // return <li key={idx} style={styles}>
-          //   <Link to={link.to}>{link.title}</Link>
-          //   <a href={link.to}>{link.title}</a>
+          //   <Link href={link.to}>{link.title}</Link>
           // </li>;
           return <li key={idx} style={styles}>
             <a href={link.to}>{link.title}</a>

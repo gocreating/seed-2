@@ -1,5 +1,4 @@
 import React from 'react';
-import {RouteHandler} from 'react-router';
 
 import BaseLayout from '../../../../core/flux/views/layouts/baseLayout.jsx';
 import Navbar from '../../../../core/flux/views/components/navbar.jsx';
@@ -7,12 +6,10 @@ import Navbar from '../../../../core/flux/views/components/navbar.jsx';
 export default class DefaultLayout extends React.Component {
   render() {
     const scripts = [
-      // 'http://localhost:8080/js/user/bundle.js',
       '/js/user/bundle.js',
     ];
 
     const styles = [
-      // 'http://localhost:8080/css/user/bundle.css',
       '/css/user/bundle.css',
     ];
 
@@ -22,7 +19,7 @@ export default class DefaultLayout extends React.Component {
         scripts={scripts}
         styles={styles} >
         <Navbar />
-        <RouteHandler {...this.props} />
+        {this.props.children}
       </BaseLayout>
     );
   }

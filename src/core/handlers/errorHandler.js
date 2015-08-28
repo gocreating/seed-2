@@ -13,7 +13,6 @@ export default (app) => {
   }
 
   app.use((err, req, res, next) => {
-    console.log('second handler');
     if (err) {
       switch (err.constructor.name) {
         case 'Database': {

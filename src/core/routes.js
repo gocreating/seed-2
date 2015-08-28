@@ -1,15 +1,19 @@
 import React from 'react';
-import {Route, DefaultRoute, NotFoundRoute} from 'react-router';
+import {Location, Locations} from 'react-router-component';
 
-var AppLayout = require('./flux/views/layouts/appLayout.jsx');
-var pathPrefix = require('./settings').installedApps.core.pathPrefix;
+import AppLayout from './flux/views/layouts/appLayout.jsx';
 
-export default (
-  <Route path={pathPrefix} handler={AppLayout}>
-    <DefaultRoute
-      handler={require('./flux/views/pages/homePage.jsx')} />
-    <Route
-      path="about"
-      handler={require('./flux/views/pages/aboutPage.jsx')} />
-  </Route>
-);
+const pathPrefix = require('./settings').installedApps.core.pathPrefix;
+
+export default class App extends React.Component {
+  render() {
+    return <Locations path={this.props.path}>
+      <Location
+        path={`${pathPrefix}/`}
+        handler={require('./flux/views/pages/homePage.jsx')} />
+      <Location
+        path={`${pathPrefix}/about`}
+        handler={require('./flux/views/pages/aboutPage.jsx')} />
+    </Locations>;
+  }
+};

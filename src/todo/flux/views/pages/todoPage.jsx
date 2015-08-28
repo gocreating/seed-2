@@ -1,13 +1,16 @@
 import React from 'react';
+
 import connectToStores from 'alt/utils/connectToStores';
 import TodoStore from '../../stores/TodoStore';
 import TodoActions from '../../actions/TodoActions';
-var TodoItem = require('../components/todoItem.jsx');
+
+import AppLayout from '../layouts/appLayout.jsx';
+import TodoItem from '../components/todoItem.jsx';
 
 const ENTER_KEY_CODE = 13;
 
 @connectToStores
-class Todo extends React.Component {
+class TodoPage extends React.Component {
   static getStores() {
     return [TodoStore];
   }
@@ -34,7 +37,7 @@ class Todo extends React.Component {
   }
 
   render() {
-    return <div>
+    return <AppLayout>
       <h1>Todo</h1>
       <input
         type="text"
@@ -45,8 +48,8 @@ class Todo extends React.Component {
           <TodoItem key={todo.id} id={todo.id} text={todo.text} />
         ))}
       </ul>
-    </div>;
+    </AppLayout>;
   }
 };
 
-export default Todo;
+export default TodoPage;

@@ -1,10 +1,8 @@
-import React from 'react';
-import Router from 'react-router';
-import Helmet from 'react-helmet';
 import fs from 'fs';
 import path from 'path';
+import React from 'react';
+import Helmet from 'react-helmet';
 
-import routes from '../routes';
 import {installedApps} from '../settings';
 import models from '../models';
 import errors from '../errors';
@@ -26,36 +24,28 @@ export default (app) => {
     for (let appName in installedApps) {
       const pathPrefix = installedApps[appName].pathPrefix;
       const routesPath = path.resolve(
-        __dirname,
-        '../../',
-        appName,
-        'routes.js'
+        __dirname, '../../', appName, 'routes.js'
       );
 
       if (fs.existsSync(routesPath)) {
-        const routes = require(routesPath);
+        const App = require(routesPath);
         app.get(pathPrefix + '\/?*', (req, res, next) => {
-          Router.run(routes, req.path, (Handler, state) => {
-            const element = React.createElement(Handler, state);
-            const html = React.renderToString(element, state);
-            if (html.length < 120) {
-              // the path does not match current routing rules
-              // so pass down to the next app.get
-              return next();
-            } else {
-              // const html = React.renderToString(<Handler {...state} />);
-              let head = Helmet.rewind();
-              res.send(
-                '<!DOCTYPE html>' +
-                '<head>' +
-                  `<title>${head.title}</title>${head.meta}${head.link}` +
-                '</head>' +
-                '<body>' +
-                html +
-                '</body>'
-              );
-            }
-          });
+          try {
+            const html = React.renderToString(<App path={req.path} />);
+            let head = Helmet.rewind();
+            res.send(
+              '<!DOCTYPE html>' +
+              '<head>' +
+                `<title>${head.title}</title>${head.meta}${head.link}` +
+              '</head>' +
+              '<body>' +
+              html +
+              '</body>'
+            );
+          } catch (err) {
+            // no routes matched in currently iterated app
+            return next();
+          }
         });
       }
     }
