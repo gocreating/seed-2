@@ -1,5 +1,3 @@
-require('babel/register');
-
 import React from 'react';
 import {Route, Routes, DefaultRoute, NotFoundRoute} from 'react-router';
 

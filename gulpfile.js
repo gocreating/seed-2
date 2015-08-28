@@ -1,12 +1,13 @@
 /**
  * Use require hook to support es6
  */
-require('babel/register');
+// require('babel/register');
 
 /**
  * Load plugins
  */
 var gulp          = require('gulp');
+var gutil         = require('gulp-util');
 var less          = require('gulp-less');
 var autoprefixer  = require('gulp-autoprefixer');
 var minifycss     = require('gulp-minify-css');
@@ -26,6 +27,8 @@ var path          = require('path');
 var fs            = require('fs');
 var nodemon       = require('gulp-nodemon');
 var browserSync   = require('browser-sync');
+var async         = require('async');
+var merge         = require('merge-stream');
 
 /**
  * Load parameters
@@ -205,8 +208,8 @@ gulp.task('backend-scripts', function() {
 });
 
 gulp.task('backend-views', function() {
-  return gulp
-    .src('./src/**/*.jsx')
+  var reactJsx = gulp
+    .src('./src/*/flux/**/*.jsx')
     .pipe(gulpif(isDev, changed('./build/debug')))
     .pipe(gulpif(isDev, sourcemaps.init()))
       .pipe(babel({
@@ -225,13 +228,32 @@ gulp.task('backend-views', function() {
     .pipe(gulpif(isDev, gulp.dest('./build/debug')))
     .pipe(gulpif(isTest, gulp.dest('./build/test')))
     .pipe(gulpif(isProd, gulp.dest('./build/release')));
+
+  var reactJs = gulp
+    .src('./src/*/flux/**/*.js')
+    .pipe(gulpif(isDev, changed('./build/debug')))
+    .pipe(gulpif(isDev, sourcemaps.init()))
+      .pipe(babel({
+        stage: 0, // to support es7
+      }))
+      .pipe(gulpif(isTest || isProd, uglify()))
+    .pipe(gulpif(isDev, sourcemaps.write({
+      includeContent: false,
+      sourceRoot: function(file) {
+        return path.resolve(__dirname, 'src');
+      },
+    })))
+    .pipe(gulpif(isDev, gulp.dest('./build/debug')))
+    .pipe(gulpif(isTest, gulp.dest('./build/test')))
+    .pipe(gulpif(isProd, gulp.dest('./build/release')));
+
+  return merge(reactJsx, reactJs);
 });
 
 gulp.task('copy', function() {
   return gulp
     .src([
       'src/*/public/**/*',
-      'src/*/flux/**/*',
       '!src/*/flux/views/**/*',
       '!src/*/public/less',
       '!src/*/public/less/**/*',
@@ -251,8 +273,8 @@ gulp.task('watch', function(cb) {
     gulp.watch('src/**/*.js', ['backend-scripts']);
     // gulp.watch(['src/**/*.js', '!src/assets/**/*.js'], ['backend-scripts']);
 
-    // watch .jsx files
-    gulp.watch('src/*/flux/views/**/*.jsx', ['backend-views', 'webpack']);
+    // watch react files
+    gulp.watch('src/*/flux/**/*', ['backend-views', 'webpack']);
 
     // watch image files
     // gulp.watch('src/assets/img/**/*', ['images']);
@@ -308,7 +330,6 @@ gulp.task('webpack-dev-server', function(cb) {
 
     var WEBPACK_HOST = process.env.HOST || 'localhost';
     var WEBPACK_PORT = parseInt(process.env.PORT) + 1 || 8080;
-
     var serverOptions = {
       publicPath: config.output.publicPath,
       // contentBase: path.join(__dirname, './build/debug/public'),
@@ -360,6 +381,162 @@ gulp.task('browser-sync', function(cb) {
   } else {
     cb();
   }
+});
+
+gulp.task('init', ['backend-scripts'], function(gulpCallback) {
+  var db;
+
+  if (isDev) {
+    db = require('./build/debug/core/models');
+  } else if (isTest) {
+    db = require('./build/test/core/models');
+  } else if (isProd) {
+    db = require('./build/release/core/models');
+  }
+
+  var log = function(str) {
+    gutil.log(gutil.colors.bgWhite.black(str));
+  };
+
+  /**
+   * Sync database and insert dummy data
+   */
+
+  async.series([
+
+    /**
+     * Syncing
+     */
+
+    function(callback) {
+      // settings.db.development.logging('\x1b[0m=== Syncing ===');
+      log(' Syncing tables ');
+      callback();
+    },
+    function(callback) {
+      db.Permission
+        .sync({force: true})
+        .then(function() {callback();});
+    },
+    function(callback) {
+      db.Group
+        .sync({force: true})
+        .then(function() {callback();});
+    },
+    function(callback) {
+      db.GroupPermission
+        .sync({force: true})
+        .then(function() {callback();});
+    },
+    function(callback) {
+      db.User
+        .sync({force: true})
+        .then(function() {callback();});
+    },
+    function(callback) {
+      db.Todo
+        .sync({force: true})
+        .then(function() {callback();});
+    },
+
+    /**
+     * Insert data
+     */
+
+    function(callback) {
+      // settings.db.development.logging('\x1b[0m=== Insert Data ===');
+      log(' Inserting data ');
+      callback();
+    },
+    function(callback) {
+      db.Permission
+        .bulkCreate([
+          {name: 'CREATE_USER'},
+          {name: 'DELETE_USER'},
+          {name: 'LOGIN'},
+          {name: 'POST_ARTICLE'},
+        ])
+        .then(function() {callback();});
+    },
+    function(callback) {
+      db.Group
+        .bulkCreate([
+          {name: 'root'},
+          {name: 'admin'},
+          {name: 'user'},
+        ])
+        .then(function() {callback();});
+    },
+    function(callback) {
+      db.User
+        .bulkCreate([{
+          name: 'user a',
+          username: 'usera',
+        }, {
+          name: 'user b',
+          username: 'userb',
+        }, ])
+        .then(function() {callback();});
+    },
+    function(callback) {
+      db.Todo
+        .bulkCreate([
+          {text: 'Dummy todo 01'},
+          {text: 'Wahahahaha'},
+          {text: 'Test!!'},
+        ])
+        .then(function() {callback();});
+    },
+
+    /**
+     * Insert relation data
+     */
+    function(callback) {
+      // settings.db.development.logging('\x1b[0m=== Insert Relation Data ===');
+      log(' Inserting relation data ');
+      callback();
+    },
+    function(callback) {
+      db.Group
+        .findOne({
+          where: {
+            name: 'user',
+          },
+        })
+        .then(function(group) {
+          db.User
+            .findOne({
+              where: {
+                username: 'usera',
+              },
+            })
+            .then(function(user) {
+              user
+                .setGroup(group)
+                .then(function() {callback();});
+            });
+        });
+    },
+    function(callback) {
+      db.Permission
+        .findAll()
+        .then(function(perms) {
+          db.Group
+            .findAll()
+            .then(function(groups) {
+              async.eachSeries(groups, function(group, cb) {
+                group
+                  .setPermissions(perms)
+                  .then(function() {cb();});
+              }, function() {
+                callback();
+              });
+            });
+        });
+    },
+  ], function done(err, result) {
+    gulpCallback();
+  });
 });
 
 /**

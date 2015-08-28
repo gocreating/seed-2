@@ -1,5 +1,23 @@
-import path from 'path';
+// import path from 'path';
+var path = require('path');
+// import gutil from 'gulp-util';
+// var gutil = require('gulp-util');
 
+var log = function(str) {
+  // color codes from:
+  //   http://bluesock.org/~willkg/dev/ansi.html
+  console.log(
+    '\x1b[1;36m' + '[SQL] ' +
+    '\x1b[1;30m' + str.replace('Executing (default): ', '') +
+    '\x1b[0m'
+  );
+  // gutil.log(
+  //   gutil.colors.blue('[SQL]'),
+  //   gutil.colors.yellow(str.replace('Executing (default): ', ''))
+  // );
+};
+
+// export default {
 module.exports = {
   server: {
     port: {
@@ -16,15 +34,7 @@ module.exports = {
       // the path is relative to 'build/debug/core'
       storage: path.resolve(__dirname, '../../../db.development.sqlite'),
       // logging: false,
-      logging: str => {
-        // color codes from:
-        //   http://bluesock.org/~willkg/dev/ansi.html
-        console.log(
-          '\x1b[1;36m' + '[SQL] ' +
-          '\x1b[1;30m' + str.replace('Executing (default): ', '') +
-          '\x1b[0m'
-        );
-      },
+      logging: log,
       pool: {
         max: 5,
         min: 0,
