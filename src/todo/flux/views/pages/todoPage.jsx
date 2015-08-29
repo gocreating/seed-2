@@ -4,8 +4,8 @@ import connectToStores from 'alt/utils/connectToStores';
 import TodoStore from '../../stores/TodoStore';
 import TodoActions from '../../actions/TodoActions';
 
-import AppLayout from '../layouts/appLayout.jsx';
-import TodoItem from '../components/todoItem.jsx';
+import AppLayout from '../layouts/AppLayout.jsx';
+import TodoItem from '../components/TodoItem.jsx';
 
 const ENTER_KEY_CODE = 13;
 

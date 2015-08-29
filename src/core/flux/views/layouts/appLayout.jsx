@@ -1,7 +1,7 @@
 import React from 'react';
 
-import BaseLayout from './baseLayout.jsx';
-import Navbar from '../components/navbar.jsx';
+import BaseLayout from './BaseLayout.jsx';
+import Navbar from '../components/Navbar.jsx';
 
 // jscs:disable
 /**

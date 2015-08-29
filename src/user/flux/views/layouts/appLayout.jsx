@@ -1,7 +1,7 @@
 import React from 'react';
 
-import BaseLayout from '../../../../core/flux/views/layouts/baseLayout.jsx';
-import Navbar from '../../../../core/flux/views/components/navbar.jsx';
+import BaseLayout from '../../../../core/flux/views/layouts/BaseLayout.jsx';
+import Navbar from '../../../../core/flux/views/components/Navbar.jsx';
 
 export default class DefaultLayout extends React.Component {
   render() {
