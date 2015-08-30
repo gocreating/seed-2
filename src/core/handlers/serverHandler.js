@@ -4,7 +4,7 @@ import https from 'https';
 import fs from 'fs'; // To read ssl key and cert
 
 // settings
-import settings from '../settings';
+import settings from '../settings.server';
 
 export default (app) => {
   /**

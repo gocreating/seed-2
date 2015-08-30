@@ -1,7 +1,7 @@
 import React from 'react';
 import {Location, Locations} from 'react-router-component';
 
-const pathPrefix = require('../core/settings').installedApps.todo.pathPrefix;
+const pathPrefix = require('../core/settings.common').installedApps.todo.pathPrefix;
 
 export default class App extends React.Component {
   render() {

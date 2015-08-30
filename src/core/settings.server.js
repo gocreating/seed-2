@@ -1,6 +1,5 @@
-// import path from 'path';
 var path = require('path');
-// import gutil from 'gulp-util';
+var commonSettings = require('./settings.common');
 // var gutil = require('gulp-util');
 
 var log = function(str) {
@@ -70,15 +69,5 @@ module.exports = {
       secret: 'saltForJwtToken',
     },
   },
-  installedApps: {
-    core: {
-      pathPrefix: '',
-    },
-    user: {
-      pathPrefix: '/user',
-    },
-    todo: {
-      pathPrefix: '/todo',
-    },
-  },
+  installedApps: commonSettings.installedApps,
 };

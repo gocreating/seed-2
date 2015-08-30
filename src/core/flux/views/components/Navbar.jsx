@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-component';
 
-var installedApps = require('../../../settings').installedApps;
+var installedApps = require('../../../settings.client').installedApps;
 
 export default class Navbar extends React.Component {
   render() {

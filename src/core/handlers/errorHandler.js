@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import {installedApps} from '../settings';
+import {installedApps} from '../settings.server';
 
 export default (app) => {
   for (let appName in installedApps) {

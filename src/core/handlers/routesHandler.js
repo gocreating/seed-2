@@ -3,7 +3,7 @@ import path from 'path';
 import React from 'react';
 import Helmet from 'react-helmet';
 
-import {installedApps} from '../settings';
+import {installedApps} from '../settings.server';
 import models from '../models';
 import errors from '../errors';
 

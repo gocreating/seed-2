@@ -82,7 +82,7 @@ if (!isDev && !isTest && !isProd) {
  * Custom configurations
  */
 
-var settings = require('./src/core/settings');
+var settings = require('./src/core/settings.server');
 
 /**
  * error handler

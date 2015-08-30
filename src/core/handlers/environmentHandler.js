@@ -5,7 +5,7 @@ import morgan       from 'morgan';
 import bodyParser   from 'body-parser';
 import cookieParser from 'cookie-parser';
 
-import {installedApps} from '../settings';
+import {installedApps} from '../settings.server';
 
 export default (app) => {
   /**

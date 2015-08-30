@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import Sequelize from 'sequelize';
-import settings from '../settings';
+import settings from '../settings.server';
 import async from 'async';
 
 // @ifdef DEV

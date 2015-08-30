@@ -1,6 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
-var settings = require('../src/core/settings');
+var settings = require('../src/core/settings.client');
 
 var installedApps = settings.installedApps;
 var appArray = [];
