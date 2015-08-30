@@ -79,3 +79,9 @@ $ gulp build -d # running the server as development mode
 ## Documentation
 
 The documentation is served on gitbook site: [seed](https://www.gitbook.com/book/gocreating/seed)
+
+## Development Gotchas
+
+### DON'T use arrow function syntax when defining model `instanceMethods`
+
+see reference: <https://github.com/babel/babel/issues/733>

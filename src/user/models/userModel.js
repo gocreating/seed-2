@@ -1,3 +1,7 @@
+import jwt      from 'jwt-simple';
+import moment   from 'moment';
+import settings from '../../core/settings.server';
+
 export default (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     name: DataTypes.STRING,
@@ -11,6 +15,41 @@ export default (sequelize, DataTypes) => {
         User.belongsTo(models.Group, {
           as: 'group',
         });
+      },
+
+      auth: (username, password, cb) => {
+        User
+          .findOne({
+            where: {
+              username: username,
+              password: password,
+            },
+            attributes: ['id', 'name', 'username'],
+          })
+          .then(user => {
+            cb(user);
+          });
+      },
+    },
+    instanceMethods: {
+      // DON'T use arrow function syntax in instanceMethods
+      // see README for more information
+      getBearerToken: function() {
+        const token = jwt.encode({
+          user: {
+            id: this.id,
+            name: this.name,
+            username: this.username,
+          },
+          expiration: moment()
+            .add(
+              settings.user.bearerToken.expiration.split(' ')[0],
+              settings.user.bearerToken.expiration.split(' ')[1]
+            )
+            .valueOf(),
+        }, settings.user.bearerToken.secret);
+
+        return token;
       },
     },
   });
