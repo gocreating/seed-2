@@ -470,11 +470,17 @@ gulp.task('init', ['backend-scripts'], function(gulpCallback) {
     function(callback) {
       db.User
         .bulkCreate([{
-          name: 'user a',
-          username: 'usera',
+          name: 'Root User',
+          username: 'root',
+          password: 'root',
         }, {
-          name: 'user b',
-          username: 'userb',
+          name: 'Admin User',
+          username: 'admin',
+          password: 'admin',
+        }, {
+          name: 'Guest User',
+          username: 'guest',
+          password: 'guest',
         }, ])
         .then(function() {callback();});
     },
@@ -497,25 +503,35 @@ gulp.task('init', ['backend-scripts'], function(gulpCallback) {
       callback();
     },
     function(callback) {
-      db.Group
+      var groupMap = [
+        {username: 'root', groupName: 'root'},
+        {username: 'admin', groupName: 'admin'},
+        {username: 'guest', groupName: 'user'},
+      ];
+
+      async.eachSeries(groupMap, function iterator(item, cb) {
+        db.Group
         .findOne({
           where: {
-            name: 'user',
+            name: item.groupName,
           },
         })
         .then(function(group) {
           db.User
             .findOne({
               where: {
-                username: 'usera',
+                username: item.username,
               },
             })
             .then(function(user) {
               user
                 .setGroup(group)
-                .then(function() {callback();});
+                .then(function() {cb();});
             });
         });
+      }, function done() {
+        callback();
+      });
     },
     function(callback) {
       db.Permission
