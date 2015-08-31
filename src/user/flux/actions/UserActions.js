@@ -1,0 +1,56 @@
+import alt from '../../../core/flux/alt';
+import React from 'react';
+import {Location} from 'react-router-component';
+
+var $ = require('jquery');
+
+class UserActions {
+  constructor() {
+    this.generateActions(
+      'updateInput',
+      'loginDone',
+      'loginFail',
+      'logoutDone',
+      'logoutFail',
+    );
+  }
+
+  login(input) {
+    return $.ajax({
+      method: 'POST',
+      url: '/api/users/login',
+      data: input,
+    })
+    .done(res => {
+      if (res.errors.length === 0) {
+        this.actions.loginDone(res);
+        location.href = '/user/profile';
+      } else {
+        this.actions.loginFail(res);
+      }
+    }.bind(this))
+    .fail(jqXHR => {
+      this.actions.loginFail(jqXHR.responseText);
+    }.bind(this));
+  }
+
+  logout() {
+    return $.ajax({
+      method: 'GET',
+      url: '/api/users/logout',
+    })
+    .done(res => {
+      if (res.errors.length === 0) {
+        this.actions.logoutDone(res);
+        location.href = '/';
+      } else {
+        this.actions.logoutFail(res);
+      }
+    }.bind(this))
+    .fail(jqXHR => {
+      this.actions.logoutFail(jqXHR.responseText);
+    }.bind(this));
+  }
+}
+
+export default alt.createActions(UserActions);

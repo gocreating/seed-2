@@ -20,6 +20,12 @@ export default class Navbar extends React.Component {
       title: 'User',
       to: `${installedApps.user && installedApps.user.pathPrefix}`,
     }, {
+      title: 'Login',
+      to: `${installedApps.user && installedApps.user.pathPrefix}/login`,
+    }, {
+      title: 'Logout',
+      to: `${installedApps.user && installedApps.user.pathPrefix}/logout`,
+    }, {
       title: 'Profile',
       to: `${installedApps.user && installedApps.user.pathPrefix}/profile`,
     }, {

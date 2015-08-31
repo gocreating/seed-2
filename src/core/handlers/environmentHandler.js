@@ -5,6 +5,7 @@ import morgan       from 'morgan';
 import bodyParser   from 'body-parser';
 import cookieParser from 'cookie-parser';
 
+import tokenParser from '../../user/middlewares/tokenParser';
 import {installedApps} from '../settings.server';
 
 export default (app) => {
@@ -72,4 +73,7 @@ export default (app) => {
 
   // cookie parser
   app.use(cookieParser());
+
+  // token parser
+  app.use(tokenParser());
 };
