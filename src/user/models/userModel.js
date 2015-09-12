@@ -30,6 +30,11 @@ export default (sequelize, DataTypes) => {
               as: 'group',
               attributes: ['name'],
               include: [{
+                // Exclude association's fields
+                // Ref: https://github.com/sequelize/sequelize/issues/3664
+                through: {
+                  attributes: [],
+                },
                 model: models.Permission,
                 attributes: ['name'],
               }, ],
