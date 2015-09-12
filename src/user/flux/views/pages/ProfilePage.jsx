@@ -6,7 +6,7 @@ import UserStore from '../../stores/UserStore';
 import loginRequired from '../../decorators/loginRequired';
 import AppLayout from '../layouts/AppLayout.jsx';
 
-@loginRequired()
+@loginRequired
 @connectToStores
 export default class ProfilePage extends React.Component {
   static getStores() {

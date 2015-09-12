@@ -5,29 +5,27 @@ import UserStore from '../stores/UserStore';
 
 import UnauthorizedPage from '../views/pages/UnauthorizedPage.jsx';
 
-export default options => {
-  return DecoratedComponent => {
-    @connectToStores
-    class LoginRequired extends React.Component {
-      static getStores() {
-        return [UserStore];
-      }
+export default DecoratedComponent => {
+  @connectToStores
+  class LoginRequired extends React.Component {
+    static getStores() {
+      return [UserStore];
+    }
 
-      static getPropsFromStores() {
-        return UserStore.getState();
-      }
+    static getPropsFromStores() {
+      return UserStore.getState();
+    }
 
-      render() {
-        if (this.props.token) {
-          return (
-            <DecoratedComponent />
-          );
-        } else {
-          return <UnauthorizedPage />;
-        }
+    render() {
+      if (this.props.token) {
+        return (
+          <DecoratedComponent />
+        );
+      } else {
+        return <UnauthorizedPage />;
       }
-    };
-
-    return LoginRequired;
+    }
   };
+
+  return LoginRequired;
 };
