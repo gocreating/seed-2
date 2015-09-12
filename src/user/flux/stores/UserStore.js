@@ -8,6 +8,7 @@ class UserStore {
       username: '',
       password: '',
     };
+    this.user = {};
 
     if (process.env.BROWSER) {
       // client-side render
@@ -29,6 +30,7 @@ class UserStore {
 
   onLoginDone(res) {
     this.token = res.data.bearerToken;
+    this.user = res.data.user;
     localStorage.setItem('token', this.token);
     console.log(res);
   }

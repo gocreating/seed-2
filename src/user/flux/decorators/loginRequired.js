@@ -20,7 +20,7 @@ export default options => {
       render() {
         if (this.props.token) {
           return (
-            <DecoratedComponent {...this.props} />
+            <DecoratedComponent />
           );
         } else {
           return <UnauthorizedPage />;

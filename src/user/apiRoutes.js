@@ -6,6 +6,7 @@ export default (app, models) => {
     models.User.auth(
       req.body.username,
       req.body.password,
+      models,
       user => {
         if (user) {
           const bearerToken = user.getBearerToken();
@@ -13,6 +14,7 @@ export default (app, models) => {
           res.json({
             data: {
               bearerToken: bearerToken,
+              user: user,
             },
             errors: [],
           });

@@ -17,17 +17,26 @@ export default (sequelize, DataTypes) => {
         });
       },
 
-      auth: (username, password, cb) => {
+      auth: (username, password, models, cb) => {
         User
-          .findOne({
+          .findAll({
             where: {
               username: username,
               password: password,
             },
             attributes: ['id', 'name', 'username'],
+            include: [{
+              model: models.Group,
+              as: 'group',
+              attributes: ['name'],
+              include: [{
+                model: models.Permission,
+                attributes: ['name'],
+              }, ],
+            }, ],
           })
           .then(user => {
-            cb(user);
+            cb(user[0]);
           });
       },
     },
