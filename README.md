@@ -84,6 +84,10 @@ $ gulp build -d # running the server as development mode
 
 The documentation is served on gitbook site: [seed](https://www.gitbook.com/book/gocreating/seed)
 
+## Others
+
+Icon source: <http://www.flaticon.com/free-icon/coffee-grains_2217>
+
 ## Development Gotchas
 
 ### DON'T use arrow function syntax when defining model `instanceMethods`
