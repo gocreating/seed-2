@@ -66,11 +66,15 @@ $ gulp build -d # running the server as development mode
     $ gulp build -p -u
     ```
 
-5. Open on browsers
+### Open on browsers
 
   - Development mode is host on port 5000
 
     `http://localhost:5000`
+
+    and the livereload server is on port 8080
+
+    `http://localhost:8080`
 
   - Production mode is host on port 3000
 
