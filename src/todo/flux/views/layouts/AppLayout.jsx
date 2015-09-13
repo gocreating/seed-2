@@ -1,7 +1,6 @@
 import React from 'react';
 
-import BaseLayout from '../../../../core/flux/views/layouts/BaseLayout.jsx';
-import Navbar from '../../../../core/flux/views/components/Navbar.jsx';
+import BaseLayout from '../../../../core/flux/views/layouts/BsBaseLayout.jsx';
 
 export default class DefaultLayout extends React.Component {
   render() {
@@ -18,7 +17,6 @@ export default class DefaultLayout extends React.Component {
         title="Seed"
         scripts={scripts}
         styles={styles} >
-        <Navbar />
         {this.props.children}
       </BaseLayout>
     );

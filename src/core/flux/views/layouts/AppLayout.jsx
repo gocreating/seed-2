@@ -1,7 +1,7 @@
 import React from 'react';
 
-import BaseLayout from './BaseLayout.jsx';
-import Navbar from '../components/Navbar.jsx';
+// import BaseLayout from './BaseLayout.jsx';
+import BaseLayout from './BsBaseLayout.jsx';
 
 // jscs:disable
 /**
@@ -20,7 +20,6 @@ export default class DefaultLayout extends React.Component {
   render() {
     const scripts = [
       // 'http://localhost:7000/browser-sync/browser-sync-client.2.8.2.js',
-      // 'https://code.jquery.com/jquery-2.1.4.min.js',
       '/js/core/bundle.js',
     ];
 
@@ -33,7 +32,6 @@ export default class DefaultLayout extends React.Component {
         title="Seed"
         scripts={scripts}
         styles={styles} >
-        <Navbar />
         {this.props.children}
       </BaseLayout>
     );
