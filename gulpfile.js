@@ -619,7 +619,7 @@ gulp.task('test', function(gulpCallback) {
       function done(err, result) {
         // if there are errors occur when testing,
         // then exit with status 1 to announce failure in CI
-        if (errs) {
+        if (errs.length > 0) {
           process.exit(1);
         } else {
           process.exit();
