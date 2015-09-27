@@ -24,7 +24,7 @@ export default (app) => {
   port = settings.server.port.production;
   // @endif
 
-  http
+  app.httpServer = http
     .createServer(app)
     .listen(port, () => {
       console.log('HTTP server listening on port', port);

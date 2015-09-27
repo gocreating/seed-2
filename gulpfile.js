@@ -29,15 +29,27 @@ var nodemon       = require('gulp-nodemon');
 var browserSync   = require('browser-sync');
 var async         = require('async');
 var merge         = require('merge-stream');
+var mocha         = require('gulp-mocha');
 
 /**
  * Load parameters
  */
 var argv = require('yargs')
-  .usage('Usage: gulp <command> [options] [-u]')
+  .usage('Usage: gulp <command> [options] [-u] [-a=<your_app>]')
+  .command(
+    'init',
+    'Initialize database.\n' +
+    'Create tables from schemas, and insert built-in records ' +
+    'like root user, default permissions, etc.'
+  )
   .command(
     'build',
     'Prepare an environment for development, test or production.'
+  )
+  .command(
+    'test',
+    'Running mocha to test the app.\n' +
+    'Be sure to run this command after `gulp build -t && gulp init -t`.'
   )
   .demand(1)
   .example('gulp build -d', 'build environment for development')
@@ -49,6 +61,8 @@ var argv = require('yargs')
   .describe('p', 'Production environment')
   .alias('u', 'uglify')
   .describe('u', 'Uglify backend .js scripts')
+  .alias('a', 'app')
+  .describe('a', 'specify which app to be tested')
   .help('h')
   .alias('h', 'help')
   .argv;
@@ -159,7 +173,11 @@ gulp.task('styles', function() {
 });
 
 gulp.task('webpack', function(cb) {
-  var webpackconfig = require('./gulp/webpack.' + env + '.js');
+  var webpackconfig = require(
+    './gulp/webpack.' +
+    (env == 'development'? 'development': 'production') +
+    '.js'
+  );
 
   return gulp
     .src('')
@@ -553,6 +571,34 @@ gulp.task('init', ['backend-scripts'], function(gulpCallback) {
   ], function done(err, result) {
     gulpCallback();
   });
+});
+
+gulp.task('test', function() {
+  var appName = argv.app;
+
+  if (appName === undefined) { // test all apps
+    var jobsStream = merge();
+    for (var iteratorAppName in settings.installedApps) {
+      var specFilePath = path.resolve(
+        __dirname,
+        './build/test/', iteratorAppName, './test/index.js'
+      );
+      if (fs.existsSync(specFilePath)) {
+        jobsStream.add(
+          gulp
+            .src(specFilePath, {
+              read: false,
+            })
+            .pipe(mocha({reporter: 'spec'}))
+        );
+      }
+    }
+    return jobsStream;
+  } else { // test the specified app
+    return gulp
+      .src('./build/test/' + appName + '/test/index.js', {read: false})
+      .pipe(mocha({reporter: 'spec'}));
+  }
 });
 
 /**
