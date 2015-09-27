@@ -7,7 +7,7 @@
     "test": "npm run jscs && npm run build && npm run mocha",
     "jscs": "jscs --verbose ./src",
     "build": "gulp init -t && gulp build -t",
-    "mocha": "mocha build/test/test/spec.js"
+    "mocha": "gulp test"
   },
   "repository": {
     "type": "git",
