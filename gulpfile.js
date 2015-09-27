@@ -588,6 +588,7 @@ gulp.task('test', function(gulpCallback) {
   if (appName === undefined) { // test all apps
     var specFilePathArr = [];
 
+    // get paths of all test files
     for (var iteratorAppName in settings.installedApps) {
       var specFilePath = path.resolve(
         __dirname,
@@ -598,6 +599,8 @@ gulp.task('test', function(gulpCallback) {
       }
     }
 
+    // run mocha to start testing
+    var errs = [];
     async.eachSeries(
       specFilePathArr,
       function(specFilePath, callback) {
@@ -606,27 +609,17 @@ gulp.task('test', function(gulpCallback) {
             read: false,
           })
           .pipe(mocha({reporter: 'spec'}))
-          .once('error', function(err) {
-            // var args = Array.prototype.slice.call(arguments);
-
-            // console.log('........................');
-            // console.log(args);
-            // console.log('........................');
-            callback(err);
+          .on('error', function(err) {
+            errs.push(err);
           })
-          .once('end', function() {
+          .on('end', function() {
             callback();
           });
-
-        // var exec = require('child_process').exec;
-        // exec('mocha "' + specFilePath + '"', function(err, stdout, stderr) {
-        //   console.log(stdout);
-        //   console.log(stderr);
-        //   callback(err);
-        // });
       },
       function done(err, result) {
-        if (err) {
+        // if there are errors occur when testing,
+        // then exit with status 1 to announce failure in CI
+        if (errs) {
           process.exit(1);
         } else {
           process.exit();

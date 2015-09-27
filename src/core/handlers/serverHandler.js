@@ -27,7 +27,9 @@ export default (app) => {
   app.httpServer = http
     .createServer(app)
     .listen(port, () => {
+      // @ifndef TEST
       console.log('HTTP server listening on port', port);
+      // @endif
     });
 
   /**
