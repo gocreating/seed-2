@@ -30,6 +30,7 @@ var browserSync   = require('browser-sync');
 var async         = require('async');
 var merge         = require('merge-stream');
 var mocha         = require('gulp-mocha');
+// var exec          = require('gulp-exec');
 
 /**
  * Load parameters
@@ -601,19 +602,31 @@ gulp.task('test', function(gulpCallback) {
     async.eachSeries(
       specFilePathArr,
       function(specFilePath, callback) {
-        gulp
-          .src(specFilePath, {
-            read: false,
-          })
-          .pipe(mocha({reporter: 'spec'}))
-          .once('error', function() {
-          })
-          .once('end', function() {
-            callback();
-          });
+        // gulp
+        //   .src(specFilePath, {
+        //     read: false,
+        //   })
+        //   .pipe(mocha({reporter: 'spec'}))
+        //   .once('error', function() {
+        //     console.log('..................!!!!!!!!!!!!!!......');
+        //     callback(new Error('test failed'));
+        //   })
+        //   .once('end', function() {
+        //     callback();
+        //   });
+        var exec = require('child_process').exec;
+        exec('mocha "' + specFilePath + '"', function(err, stdout, stderr) {
+          console.log(stdout);
+          console.log(stderr);
+          callback(err);
+        });
       },
       function done(err, result) {
-        process.exit();
+        if (err) {
+          process.exit(1);
+        } else {
+          process.exit();
+        }
         gulpCallback();
       }
     );
