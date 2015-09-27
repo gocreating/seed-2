@@ -4,20 +4,26 @@ import TodoActions from '../actions/TodoActions';
 class TodoStore {
   constructor() {
     this.bindActions(TodoActions);
+    this.currentInput = '';
     this.todos = [];
   }
 
-  onDownloadTodosSuccess(todos) {
+  onDownloadSuccess(todos) {
     this.todos = this.todos.concat(todos);
   }
 
-  onCreate(todo) {
+  onUpdateCurrentInput(newInput) {
+    this.currentInput = newInput;
+  }
+
+  onCreateSuccess(todo) {
+    this.currentInput = '';
     this.todos = this.todos.concat(todo);
   }
 
-  onDestroy(id) {
+  onDestroySuccess(destroyedTodo) {
     this.todos = this.todos.filter((todo) => {
-      return todo.id != id;
+      return todo.id != destroyedTodo.id;
     });
   }
 }
