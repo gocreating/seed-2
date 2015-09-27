@@ -20,6 +20,10 @@ describe('User Module', () => {
   // launch the server
   let app = require('../../app');
 
+  after(() => {
+    app.httpServer.close();
+  });
+
   describe('general routing', () => {
     const paths = [
       // '/user/register',
