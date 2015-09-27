@@ -437,6 +437,15 @@ gulp.task('init', ['backend-scripts'], function(gulpCallback) {
         .then(function() {callback();});
     },
     function(callback) {
+
+      async.series([
+      function(callback) {
+        callback();
+      },
+    ], function done(err, result) {
+
+    });
+
       db.Group
         .sync({force: true})
         .then(function() {callback();});
@@ -573,31 +582,51 @@ gulp.task('init', ['backend-scripts'], function(gulpCallback) {
   });
 });
 
-gulp.task('test', function() {
+gulp.task('test', function(gulpCallback) {
   var appName = argv.app;
 
   if (appName === undefined) { // test all apps
-    var jobsStream = merge();
+    var specFilePathArr = [];
+
     for (var iteratorAppName in settings.installedApps) {
       var specFilePath = path.resolve(
         __dirname,
         './build/test/', iteratorAppName, './test/index.js'
       );
       if (fs.existsSync(specFilePath)) {
-        jobsStream.add(
-          gulp
-            .src(specFilePath, {
-              read: false,
-            })
-            .pipe(mocha({reporter: 'spec'}))
-        );
+        specFilePathArr.push(specFilePath);
       }
     }
-    return jobsStream;
+
+    async.eachSeries(
+      specFilePathArr,
+      function(specFilePath, callback) {
+        gulp
+          .src(specFilePath, {
+            read: false,
+          })
+          .pipe(mocha({reporter: 'spec'}))
+          .once('error', function() {
+          })
+          .once('end', function() {
+            callback();
+          });
+      },
+      function done(err, result) {
+        process.exit();
+        gulpCallback();
+      }
+    );
   } else { // test the specified app
     return gulp
       .src('./build/test/' + appName + '/test/index.js', {read: false})
-      .pipe(mocha({reporter: 'spec'}));
+      .pipe(mocha({reporter: 'spec'}))
+      .once('error', function() {
+        process.exit(1);
+      })
+      .once('end', function() {
+        process.exit();
+      });
   }
 });
 

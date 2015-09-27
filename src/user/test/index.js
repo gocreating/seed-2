@@ -1,47 +1,39 @@
-var chai = require('chai');
-var expect = chai.expect;
-var request = require('superagent');
+import chai from 'chai';
+import request from 'superagent';
+import settings from '../../core/settings.server';
 
-var settings = require('../../core/settings.server');
-var serverPort = settings.server.port.test;
-var base = 'http://localhost:' + serverPort;
+const expect = chai.expect;
+const serverPort = settings.server.port.test;
+const base = 'http://localhost:' + serverPort;
 
-var vlaidUser = {
+const vlaidUser = {
   username: 'root',
   password: 'root',
 };
 
-var newUser = {
+const newUser = {
   username: 'test',
   password: 'test',
 };
 
-describe('User Module', function() {
-  var app;
+describe('User Module', () => {
+  // launch the server
+  let app = require('../../app');
 
-  before(function() {
-    // launch the server
-    app = require('../../app');
-  });
-
-  after(function() {
-    app.httpServer.close();
-  });
-
-  describe('general routing', function() {
-    var paths = [
+  describe('general routing', () => {
+    const paths = [
       // '/user/register',
       '/user/login',
       '/user/logout',
     ];
 
-    paths.forEach(function(path) {
+    paths.forEach((path) => {
       it(
         'should respond 200 to GET ' + path,
-        function(done) {
+        (done) => {
           request
             .get(base + path)
-            .end(function(err, res) {
+            .end((err, res) => {
               expect(res).to.not.be.undefined;
               expect(res.status).to.equal(200);
               done();
@@ -51,24 +43,24 @@ describe('User Module', function() {
     });
   });
 
-  describe('login required routing', function() {
-    var token;
-    var paths = [
+  describe('login required routing', () => {
+    let token;
+    const paths = [
       '/user',
       '/user/profile',
     ];
 
-    before(function(done) {
+    before((done) => {
       request
         .post(base + '/api/users/login')
         .send(vlaidUser)
-        .end(function(err, res) {
+        .end((err, res) => {
           token = res.body.data.bearerToken;
           done();
         });
     });
 
-    paths.forEach(function(path) {
+    paths.forEach((path) => {
       // it(
       //   'should respond 401 to GET ' + path + ' before login',
       //   function(done) {
@@ -84,11 +76,11 @@ describe('User Module', function() {
 
       it(
         'should respond 200 to GET ' + path + ' after login',
-        function(done) {
+        (done) => {
           request
             .get(base + path)
             .set('authorization', 'Bearer ' + token)
-            .end(function(err, res) {
+            .end((err, res) => {
               expect(res).to.not.be.undefined;
               expect(res.status).to.equal(200);
               done();
@@ -98,7 +90,7 @@ describe('User Module', function() {
     });
   });
 
-  describe('API', function() {
+  describe('API', () => {
     // describe('POST /api/user', function() {
     //   it('should respond with a valid user', function(done) {
     //     request
@@ -115,20 +107,20 @@ describe('User Module', function() {
     //   });
     // });
 
-    describe('POST /api/users/login', function() {
-      it('should respond with a valid token', function(done) {
+    describe('POST /api/users/login', () => {
+      it('should respond with a valid token', (done) => {
         request
           .post(base + '/api/users/login')
           .send(vlaidUser)
-          .end(function(err, res) {
+          .end((err, res) => {
             expect(res).to.not.be.undefined;
 
-            var jwt = require('jwt-simple');
-            var decoded = jwt.decode(
+            const jwt = require('jwt-simple');
+            const decoded = jwt.decode(
               res.body.data.bearerToken,
               settings.user.bearerToken.secret
             );
-            var actualUser = decoded.user;
+            const actualUser = decoded.user;
 
             expect(actualUser.username).to.equal(vlaidUser.username);
             done();
