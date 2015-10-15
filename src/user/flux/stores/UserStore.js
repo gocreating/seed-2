@@ -1,12 +1,16 @@
 import alt from '../../../core/flux/alt';
 import UserActions from '../actions/UserActions';
+import assign from 'object-assign';
 
 class UserStore {
   constructor() {
     this.bindActions(UserActions);
     this.input = {
-      username: '',
-      password: '',
+      registerName: '',
+      registerUsername: '',
+      registerPassword: '',
+      loginUsername: '',
+      loginPassword: '',
     };
 
     if (process.env.BROWSER) {
@@ -21,12 +25,15 @@ class UserStore {
   }
 
   onUpdateInput(newInput) {
-    if (newInput.username !== undefined) {
-      this.input.username = newInput.username;
-    }
-    if (newInput.password !== undefined) {
-      this.input.password = newInput.password;
-    }
+    assign(this.input, newInput);
+  }
+
+  onRegisterDone(res) {
+    console.log('register done');
+  }
+
+  onRegisterFail(res) {
+    console.log('register fail');
   }
 
   onLoginDone(res) {

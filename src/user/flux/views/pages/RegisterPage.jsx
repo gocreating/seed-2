@@ -7,7 +7,7 @@ import UserActions from '../../actions/UserActions';
 import AppLayout from '../layouts/AppLayout.jsx';
 
 @connectToStores
-export default class LoginPage extends React.Component {
+export default class RegisterPage extends React.Component {
   static getStores() {
     return [UserStore];
   }
@@ -24,35 +24,44 @@ export default class LoginPage extends React.Component {
 
   _onSubmit(e) {
     e.preventDefault();
-    UserActions.login({
-      username: this.props.input.loginUsername,
-      password: this.props.input.loginPassword,
+    UserActions.register({
+      name: this.props.input.registerName,
+      username: this.props.input.registerUsername,
+      password: this.props.input.registerPassword,
     });
   }
 
   render() {
     return <AppLayout>
-      <h1>Login</h1>
+      <h1>Register</h1>
 
       <form onSubmit={this._onSubmit.bind(this)}>
         <div>
           <input
             type="text"
+            placeholder="name"
+            value={this.props.input.registerName}
+            onChange={this._onInputChange.bind(this, 'registerName')} />
+        </div>
+
+        <div>
+          <input
+            type="text"
             placeholder="username"
-            value={this.props.input.loginUsername}
-            onChange={this._onInputChange.bind(this, 'loginUsername')} />
+            value={this.props.input.registerUsername}
+            onChange={this._onInputChange.bind(this, 'registerUsername')} />
         </div>
 
         <div>
           <input
             type="password"
             placeholder="password"
-            value={this.props.input.loginPassword}
-            onChange={this._onInputChange.bind(this, 'loginPassword')} />
+            value={this.props.input.registerPassword}
+            onChange={this._onInputChange.bind(this, 'registerPassword')} />
         </div>
 
         <div>
-          <button type="submit">Login</button>
+          <button type="submit">Register</button>
         </div>
       </form>
     </AppLayout>;

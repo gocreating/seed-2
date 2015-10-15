@@ -8,11 +8,32 @@ class UserActions {
   constructor() {
     this.generateActions(
       'updateInput',
+      'registerDone',
+      'registerFail',
       'loginDone',
       'loginFail',
       'logoutDone',
       'logoutFail',
     );
+  }
+
+  register(input) {
+    return $.ajax({
+      method: 'POST',
+      url: '/api/users',
+      data: input,
+    })
+    .done(res => {
+      if (res.errors.length === 0) {
+        this.actions.registerDone(res);
+        location.href = '/user/profile';
+      } else {
+        this.actions.registerFail(res);
+      }
+    }.bind(this))
+    .fail(jqXHR => {
+      this.actions.registerFail(jqXHR.responseText);
+    }.bind(this));
   }
 
   login(input) {

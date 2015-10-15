@@ -12,6 +12,9 @@ export default class App extends React.Component {
           path={`${pathPrefix}`}
           handler={require('./flux/views/pages/UserPage.jsx')} />
         <Location
+          path={`${pathPrefix}/register`}
+          handler={require('./flux/views/pages/RegisterPage.jsx')} />
+        <Location
           path={`${pathPrefix}/login`}
           handler={require('./flux/views/pages/LoginPage.jsx')} />
         <Location

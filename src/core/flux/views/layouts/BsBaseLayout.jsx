@@ -89,6 +89,8 @@ export default class BaseLayout extends React.Component {
                     User <span className="caret"></span>
                   </a>
                   <ul className="dropdown-menu">
+                    <li><a href="/user/register">Register</a></li>
+                    <li role="separator" className="divider"></li>
                     <li><a href="/user">User Space</a></li>
                     <li><a href="/user/profile">Profile</a></li>
                     <li><a href="/user/login">Login</a></li>
